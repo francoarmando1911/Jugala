@@ -10,15 +10,16 @@
     "url": "https://github.com/francoarmando1911/jugala.git"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "server",
+    "client"
   ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "echo 'TODO: configurar dev en apps' && exit 1",
-    "build": "echo 'TODO: configurar build en apps' && exit 1",
-    "lint": "echo 'TODO: configurar lint' && exit 1"
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "build:client": "npm run build --workspace=client"
   }
 }
