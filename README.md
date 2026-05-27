@@ -12,20 +12,18 @@ Encontrar con quién jugar es uno de los principales obstáculos del deporte ama
 
 | Capa             | Tecnología                              |
 | ---------------- | --------------------------------------- |
-| Frontend         | Next.js 15 + TypeScript + TailwindCSS   |
-| Backend          | NestJS + TypeScript                     |
+| Framework        | Next.js 15 (App Router) + TypeScript    |
+| UI               | TailwindCSS + shadcn/ui                 |
 | Base de datos    | PostgreSQL + Prisma                     |
 | Autenticación    | Better Auth                             |
-| Realtime         | Socket.IO                               |
-| Deploy           | Vercel (client) + Railway (server)      |
+| Realtime         | Pusher                                  |
+| Validación       | Zod                                     |
+| Email            | Resend                                  |
+| Deploy           | Vercel                                  |
 
 ## Estructura del repositorio
 
-​```
-jugala/
-├── client/    → Frontend Next.js
-└── server/    → Backend NestJS
-​```
+- **client/** — Aplicación Next.js full-stack (frontend + API routes)
 
 ## Requisitos
 
@@ -33,19 +31,9 @@ jugala/
 - npm 10+
 - PostgreSQL 15+ (local o Docker)
 
-## Setup local
-
-​```bash
-git clone https://github.com/francoarmando1911/jugala.git
-cd jugala
-npm install
-​```
-
-_Más instrucciones cuando las apps estén configuradas._
-
 ## Roadmap
 
-- [x] Fase 0 · Setup inicial del monorepo
+- [x] Fase 0 · Setup inicial
 - [ ] Fase 1 · MVP core (auth, perfiles, partidos, chat)
 - [ ] Fase 2 · Calidad (tests e2e, notificaciones)
 - [ ] Fase 3 · Beta cerrada
