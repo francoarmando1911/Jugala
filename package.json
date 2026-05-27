@@ -1,0 +1,24 @@
+{
+  "name": "jugala",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma para encontrar compañeros y rivales de tenis, pádel y fútbol amateur",
+  "author": "Franco Armando",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/francoarmando1911/jugala.git"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "echo 'TODO: configurar dev en apps' && exit 1",
+    "build": "echo 'TODO: configurar build en apps' && exit 1",
+    "lint": "echo 'TODO: configurar lint' && exit 1"
+  }
+}
