@@ -17,18 +17,15 @@ Encontrar con quién jugar es uno de los principales obstáculos del deporte ama
 | Base de datos    | PostgreSQL + Prisma                     |
 | Autenticación    | Better Auth                             |
 | Realtime         | Socket.IO                               |
-| Deploy           | Vercel (web) + Railway (api)            |
+| Deploy           | Vercel (client) + Railway (server)      |
 
 ## Estructura del repositorio
 
-\`\`\`
+​```
 jugala/
-├── apps/
-│   ├── web/      → Frontend Next.js
-│   └── api/      → Backend NestJS
-└── packages/
-    └── shared/   → Tipos y schemas compartidos
-\`\`\`
+├── client/    → Frontend Next.js
+└── server/    → Backend NestJS
+​```
 
 ## Requisitos
 
@@ -38,11 +35,11 @@ jugala/
 
 ## Setup local
 
-\`\`\`bash
+​```bash
 git clone https://github.com/francoarmando1911/jugala.git
 cd jugala
 npm install
-\`\`\`
+​```
 
 _Más instrucciones cuando las apps estén configuradas._
 
