@@ -15,19 +15,54 @@ datasource db {
 // =====================================================================
 
 model User {
-  id            String  @id @default(cuid())
-  email         String  @unique
-  emailVerified Boolean @default(false)
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
   name          String
   image         String?
+  bio           String?
+  zone          String?
+  lat           Float?
+  lng           Float?
+  availability  String?
+  onboarded     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  profiles      Profile[]
 
+  @@map("users")
+}
+
+// =====================================================================
+// PERFIL DEL JUGADOR
+// =====================================================================
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sport     Sport
+  level     Level
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions Session[]
-  accounts Account[]
+  @@unique([userId, sport])
+  @@index([sport, level])
+  @@map("profiles")
+}
 
-  @@map("users")
+enum Sport {
+  TENNIS
+  PADEL
+  FOOTBALL
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  COMPETITIVE
 }
 
 model Session {
