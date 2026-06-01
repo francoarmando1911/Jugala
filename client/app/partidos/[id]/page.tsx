@@ -124,6 +124,10 @@ export default async function PartidoPage({
           {/* Acciones */}
           <MatchActions
             matchId={match.id}
+            matchTitle={match.title}
+            matchSport={sportLabels[match.sport]}
+            matchDate={dateFormatted}
+            matchLocation={match.location}
             isOrganizer={isOrganizer}
             isParticipant={isParticipant}
             status={match.status}
