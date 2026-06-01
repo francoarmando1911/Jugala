@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BackButton } from "@/components/back-button";
+import { MatchFilters } from "./match-filters";
 
 const sportLabels: Record<string, string> = {
   TENNIS: "🎾 Tenis",
@@ -16,11 +16,13 @@ const sportLabels: Record<string, string> = {
 const statusLabels: Record<string, { label: string; color: string }> = {
   OPEN: { label: "Abierto", color: "text-green-500" },
   FULL: { label: "Completo", color: "text-yellow-500" },
-  PLAYED: { label: "Jugado", color: "text-muted-foreground" },
-  CANCELLED: { label: "Cancelado", color: "text-red-500" },
 };
 
-export default async function PartidosPage() {
+export default async function PartidosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sport?: string; location?: string }>;
+}) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -29,23 +31,47 @@ export default async function PartidosPage() {
     redirect("/login");
   }
 
-  const matches = await prisma.match.findMany({
+  const params = await searchParams;
+
+  // Marcar partidos vencidos como PLAYED automáticamente
+  await prisma.match.updateMany({
     where: {
-      date: { gte: new Date() },
+      date: { lt: new Date() },
       status: { in: ["OPEN", "FULL"] },
     },
+    data: { status: "PLAYED" },
+  });
+
+  // Construir filtros dinámicos
+  const where: Record<string, unknown> = {
+    date: { gte: new Date() },
+    status: { in: ["OPEN", "FULL"] },
+  };
+
+  if (params.sport && params.sport !== "ALL") {
+    where.sport = params.sport;
+  }
+
+  if (params.location) {
+    where.location = {
+      contains: params.location,
+      mode: "insensitive",
+    };
+  }
+
+  const matches = await prisma.match.findMany({
+    where,
     include: {
       organizer: { select: { name: true } },
       participants: { where: { status: "CONFIRMED" } },
     },
     orderBy: { date: "asc" },
-    take: 20,
+    take: 50,
   });
 
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="mx-auto max-w-2xl space-y-6">
-        <BackButton />
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Partidos disponibles</h1>
           <Link href="/partidos/crear">
@@ -53,11 +79,17 @@ export default async function PartidosPage() {
           </Link>
         </div>
 
+        {/* Filtros */}
+        <MatchFilters
+          currentSport={params.sport || "ALL"}
+          currentLocation={params.location || ""}
+        />
+
         {matches.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-muted-foreground">
-                No hay partidos próximos. ¡Sé el primero en crear uno!
+                No hay partidos que coincidan con tu búsqueda.
               </p>
               <Link href="/partidos/crear">
                 <Button className="mt-4">Crear partido</Button>
@@ -66,6 +98,9 @@ export default async function PartidosPage() {
           </Card>
         ) : (
           <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              {matches.length} {matches.length === 1 ? "partido encontrado" : "partidos encontrados"}
+            </p>
             {matches.map((match) => {
               const spotsLeft = match.maxPlayers - match.participants.length;
               const status = statusLabels[match.status];
@@ -88,11 +123,13 @@ export default async function PartidosPage() {
                             <span className="text-sm">
                               {sportLabels[match.sport]}
                             </span>
-                            <span
-                              className={`text-xs font-medium ${status.color}`}
-                            >
-                              {status.label}
-                            </span>
+                            {status && (
+                              <span
+                                className={`text-xs font-medium ${status.color}`}
+                              >
+                                {status.label}
+                              </span>
+                            )}
                           </div>
                           <p className="font-semibold">{match.title}</p>
                           <p className="text-sm text-muted-foreground">
