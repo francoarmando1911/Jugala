@@ -5,7 +5,7 @@ import { redirect, notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MatchActions } from "./match-actions";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/back-button";
 
 const sportLabels: Record<string, string> = {
   TENNIS: "🎾 Tenis",
@@ -129,11 +129,7 @@ export default async function PartidoPage({
             status={match.status}
             spotsLeft={spotsLeft}
           />
-          <Link href="/partidos" className="block">
-            <Button variant="outline" className="w-full">
-              ← Volver a partidos
-            </Button>
-          </Link>
+          <BackButton fallback="/dashboard" />
         </CardContent>
       </Card>
     </div>
