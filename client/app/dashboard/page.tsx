@@ -44,6 +44,8 @@ export default async function DashboardPage() {
     redirect("/perfil/completar");
   }
 
+  const isAdmin = (user as unknown as { role: string }).role === "ADMIN";
+
   const myUpcoming = await prisma.match.findMany({
     where: {
       date: { gte: new Date() },
@@ -105,13 +107,18 @@ export default async function DashboardPage() {
             <h1 className="text-3xl font-bold">Hola, {user.name} 👋</h1>
             <p className="text-muted-foreground">{user.email}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link href="/partidos/crear">
               <Button>+ Crear partido</Button>
             </Link>
             <Link href="/partidos">
               <Button variant="outline">Ver partidos</Button>
             </Link>
+            {isAdmin && (
+              <Link href="/admin">
+                <Button variant="outline">Panel admin</Button>
+              </Link>
+            )}
           </div>
         </div>
 
