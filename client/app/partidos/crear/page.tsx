@@ -5,6 +5,7 @@ import { createMatch } from "@/app/actions/match";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BackButton } from "@/components/back-button";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -72,104 +73,108 @@ export default function CrearPartidoPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Crear partido</CardTitle>
-          <CardDescription>
-            Armá un partido y esperá que se sumen jugadores.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label>Deporte</Label>
-              <Select value={sport} onValueChange={handleSportChange}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {SPORTS.map((s) => (
-                    <SelectItem key={s.value} value={s.value}>
-                      {s.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      <div className="w-full max-w-lg">
+        <BackButton />
 
-            <div className="space-y-2">
-              <Label htmlFor="title">Título</Label>
-              <Input
-                id="title"
-                name="title"
-                placeholder="Ej: Pádel dobles en Club Náutico"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">
-                Descripción{" "}
-                <span className="font-normal text-muted-foreground">(opcional)</span>
-              </Label>
-              <Textarea
-                id="description"
-                name="description"
-                placeholder="Nivel intermedio, llevamos pelotas. Después birras."
-                rows={2}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+        <Card className="w-full max-w-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold">Crear partido</CardTitle>
+            <CardDescription>
+              Armá un partido y esperá que se sumen jugadores.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="date">Fecha</Label>
-                <Input id="date" name="date" type="date" min={today} required />
+                <Label>Deporte</Label>
+                <Select value={sport} onValueChange={handleSportChange}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SPORTS.map((s) => (
+                      <SelectItem key={s.value} value={s.value}>
+                        {s.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="time">Hora</Label>
-                <Input id="time" name="time" type="time" required />
+                <Label htmlFor="title">Título</Label>
+                <Input
+                  id="title"
+                  name="title"
+                  placeholder="Ej: Pádel dobles en Club Náutico"
+                  required
+                />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="location">Lugar</Label>
-              <Input
-                id="location"
-                name="location"
-                placeholder="Ej: Club Náutico, Cancha 3"
-                required
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">
+                  Descripción{" "}
+                  <span className="font-normal text-muted-foreground">(opcional)</span>
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Nivel intermedio, llevamos pelotas. Después birras."
+                  rows={2}
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label>Jugadores</Label>
-              <Select
-                value={String(maxPlayers)}
-                onValueChange={(val) => setMaxPlayers(Number(val))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {PLAYER_OPTIONS[sport].map((n) => (
-                    <SelectItem key={n} value={String(n)}>
-                      {n} jugadores
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="date">Fecha</Label>
+                  <Input id="date" name="date" type="date" min={today} required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="time">Hora</Label>
+                  <Input id="time" name="time" type="time" required />
+                </div>
+              </div>
 
-            {error && (
-              <p className="text-sm text-red-500 text-center">{error}</p>
-            )}
+              <div className="space-y-2">
+                <Label htmlFor="location">Lugar</Label>
+                <Input
+                  id="location"
+                  name="location"
+                  placeholder="Ej: Club Náutico, Cancha 3"
+                  required
+                />
+              </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creando..." : "Crear partido"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              <div className="space-y-2">
+                <Label>Jugadores</Label>
+                <Select
+                  value={String(maxPlayers)}
+                  onValueChange={(val) => setMaxPlayers(Number(val))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PLAYER_OPTIONS[sport].map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n} jugadores
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Creando..." : "Crear partido"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

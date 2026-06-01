@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { BackButton } from "@/components/back-button";
 
 const sportLabels: Record<string, string> = {
   TENNIS: "🎾 Tenis",
@@ -44,6 +45,7 @@ export default async function PartidosPage() {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="mx-auto max-w-2xl space-y-6">
+        <BackButton />
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Partidos disponibles</h1>
           <Link href="/partidos/crear">
