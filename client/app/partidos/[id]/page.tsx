@@ -2,22 +2,17 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
+import { CalendarDays, Clock, MapPin, User, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SportBadge } from "@/components/sport-badge";
 import { MatchActions } from "./match-actions";
-import Link from "next/link";
 import { BackButton } from "@/components/back-button";
 
-const sportLabels: Record<string, string> = {
-  TENNIS: "🎾 Tenis",
-  PADEL: "🏓 Pádel",
-  FOOTBALL: "⚽ Fútbol",
-};
-
 const statusLabels: Record<string, { label: string; color: string }> = {
-  OPEN: { label: "Abierto", color: "text-green-500" },
-  FULL: { label: "Completo", color: "text-yellow-500" },
-  PLAYED: { label: "Jugado", color: "text-muted-foreground" },
-  CANCELLED: { label: "Cancelado", color: "text-red-500" },
+  OPEN: { label: "Abierto", color: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
+  FULL: { label: "Completo", color: "text-amber-600 dark:text-amber-400 bg-amber-500/10" },
+  PLAYED: { label: "Jugado", color: "text-muted-foreground bg-muted" },
+  CANCELLED: { label: "Cancelado", color: "text-red-500 bg-red-500/10" },
 };
 
 export default async function PartidoPage({
@@ -70,72 +65,110 @@ export default async function PartidoPage({
   const status = statusLabels[match.status];
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-lg">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <span className="text-sm">{sportLabels[match.sport]}</span>
-            <span className={`text-sm font-medium ${status.color}`}>
-              {status.label}
-            </span>
-          </div>
-          <CardTitle className="text-2xl">{match.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {match.description && (
-            <p className="text-muted-foreground">{match.description}</p>
-          )}
+    <div className="px-4 py-8">
+      <div className="mx-auto max-w-lg">
+        <BackButton fallback="/partidos" />
 
-          <div className="space-y-2 text-sm">
-            <p>📅 {dateFormatted}</p>
-            <p>🕐 {timeFormatted}</p>
-            <p>📍 {match.location}</p>
-            <p>👤 Organizador: {match.organizer.name}</p>
-            <p>
-              👥 {match.participants.length}/{match.maxPlayers} jugadores
-              {spotsLeft > 0 && match.status === "OPEN" && (
-                <span className="text-muted-foreground">
-                  {" "}· {spotsLeft} {spotsLeft === 1 ? "lugar" : "lugares"}
-                </span>
-              )}
-            </p>
-          </div>
+        <Card>
+          <CardHeader className="space-y-3">
+            <div className="flex items-center justify-between">
+              <SportBadge sport={match.sport} size="md" />
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${status.color}`}
+              >
+                {status.label}
+              </span>
+            </div>
+            <CardTitle className="text-2xl leading-tight">
+              {match.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {match.description && (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {match.description}
+              </p>
+            )}
 
-          {/* Lista de jugadores */}
-          <div className="space-y-2">
-            <p className="text-sm font-semibold">Jugadores anotados:</p>
-            <div className="space-y-1">
-              {match.participants.map((p) => (
-                <div
-                  key={p.id}
-                  className="flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2 text-sm"
-                >
-                  <span className="font-medium">{p.user.name}</span>
-                  {p.userId === match.organizerId && (
-                    <span className="text-xs text-muted-foreground">
-                      (organizador)
+            {/* Info */}
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-2.5 text-sm">
+                <CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="capitalize">{dateFormatted}</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-sm">
+                <Clock className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span>{timeFormatted}</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-sm">
+                <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span>{match.location}</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-sm">
+                <User className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span>Organizador: {match.organizer.name}</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-sm">
+                <Users className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span>
+                  {match.participants.length}/{match.maxPlayers} jugadores
+                  {spotsLeft > 0 && match.status === "OPEN" && (
+                    <span className="text-muted-foreground">
+                      {" "}
+                      · {spotsLeft} {spotsLeft === 1 ? "lugar" : "lugares"}
                     </span>
                   )}
-                </div>
-              ))}
+                </span>
+              </div>
             </div>
-          </div>
 
-          {/* Acciones */}
-          <MatchActions
-            matchId={match.id}
-            matchTitle={match.title}
-            matchSport={sportLabels[match.sport]}
-            matchDate={dateFormatted}
-            matchLocation={match.location}
-            isOrganizer={isOrganizer}
-            isParticipant={isParticipant}
-            status={match.status}
-            spotsLeft={spotsLeft}
-          />
-          <BackButton fallback="/dashboard" />
-        </CardContent>
-      </Card>
+            {/* Jugadores */}
+            <div className="space-y-2.5">
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Jugadores anotados
+              </p>
+              <div className="space-y-1.5">
+                {match.participants.map((p) => {
+                  const initial = (p.user.name ?? "U")[0].toUpperCase();
+                  return (
+                    <div
+                      key={p.id}
+                      className="flex items-center gap-2.5 rounded-lg border border-border/60 px-3 py-2 text-sm"
+                    >
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                        {initial}
+                      </div>
+                      <span className="font-medium">{p.user.name}</span>
+                      {p.userId === match.organizerId && (
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] text-primary">
+                          Organizador
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Acciones */}
+            <MatchActions
+              matchId={match.id}
+              matchTitle={match.title}
+              matchSport={
+                { TENNIS: "🎾 Tenis", PADEL: "🏓 Pádel", FOOTBALL: "⚽ Fútbol" }[
+                  match.sport
+                ] ?? match.sport
+              }
+              matchDate={dateFormatted}
+              matchLocation={match.location}
+              isOrganizer={isOrganizer}
+              isParticipant={isParticipant}
+              status={match.status}
+              spotsLeft={spotsLeft}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

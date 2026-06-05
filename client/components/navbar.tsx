@@ -36,12 +36,30 @@ export function Navbar() {
         {/* Logo */}
         <Link
           href={session ? "/dashboard" : "/"}
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
-            J
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0a0f0d] dark:bg-[#a3e635]">
+            <span
+              className="text-[17px] leading-none text-[#a3e635] dark:text-[#0a0f0d]"
+              style={{
+                fontFamily: "var(--font-archivo), 'Archivo', sans-serif",
+                fontWeight: 800,
+                fontStyle: "italic",
+              }}
+            >
+              J
+            </span>
           </div>
-          <span className="font-semibold text-lg tracking-tight">Jugala</span>
+          <span
+            className="text-lg tracking-tight text-foreground"
+            style={{
+              fontFamily: "var(--font-archivo), 'Archivo', sans-serif",
+              fontWeight: 800,
+              fontStyle: "italic",
+            }}
+          >
+            jugala
+          </span>
         </Link>
 
         {/* Desktop nav */}
