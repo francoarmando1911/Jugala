@@ -68,15 +68,14 @@ export default function CrearPartidoPage() {
     }
   };
 
-  // Fecha mínima: hoy
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-8">
-      <div className="w-full max-w-lg">
+    <div className="px-4 py-8">
+      <div className="mx-auto max-w-lg">
         <BackButton />
 
-        <Card className="w-full max-w-lg">
+        <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Crear partido</CardTitle>
             <CardDescription>
@@ -114,7 +113,9 @@ export default function CrearPartidoPage() {
               <div className="space-y-2">
                 <Label htmlFor="description">
                   Descripción{" "}
-                  <span className="font-normal text-muted-foreground">(opcional)</span>
+                  <span className="font-normal text-muted-foreground">
+                    (opcional)
+                  </span>
                 </Label>
                 <Textarea
                   id="description"
@@ -127,7 +128,13 @@ export default function CrearPartidoPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="date">Fecha</Label>
-                  <Input id="date" name="date" type="date" min={today} required />
+                  <Input
+                    id="date"
+                    name="date"
+                    type="date"
+                    min={today}
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="time">Hora</Label>

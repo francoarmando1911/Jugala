@@ -151,3 +151,7 @@
     font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
   }
 }
+/* ─── Sport accent borders (used by match cards) ─── */
+.border-l-emerald-500 { border-left-color: oklch(0.696 0.17 162.48); }
+.border-l-amber-500   { border-left-color: oklch(0.769 0.188 70.08); }
+.border-l-sky-500     { border-left-color: oklch(0.685 0.169 237.32); }
