@@ -6,6 +6,7 @@ import { CalendarDays, Clock, MapPin, User, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SportBadge } from "@/components/sport-badge";
 import { MatchActions } from "./match-actions";
+import { MatchChat } from "@/components/match-chat";
 import { BackButton } from "@/components/back-button";
 
 const statusLabels: Record<string, { label: string; color: string }> = {
@@ -66,9 +67,10 @@ export default async function PartidoPage({
 
   return (
     <div className="px-4 py-8">
-      <div className="mx-auto max-w-lg">
+      <div className="mx-auto max-w-lg space-y-4">
         <BackButton fallback="/partidos" />
 
+        {/* Match info */}
         <Card>
           <CardHeader className="space-y-3">
             <div className="flex items-center justify-between">
@@ -90,7 +92,6 @@ export default async function PartidoPage({
               </p>
             )}
 
-            {/* Info */}
             <div className="space-y-2.5">
               <div className="flex items-center gap-2.5 text-sm">
                 <CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -114,15 +115,13 @@ export default async function PartidoPage({
                   {match.participants.length}/{match.maxPlayers} jugadores
                   {spotsLeft > 0 && match.status === "OPEN" && (
                     <span className="text-muted-foreground">
-                      {" "}
-                      · {spotsLeft} {spotsLeft === 1 ? "lugar" : "lugares"}
+                      {" "}· {spotsLeft} {spotsLeft === 1 ? "lugar" : "lugares"}
                     </span>
                   )}
                 </span>
               </div>
             </div>
 
-            {/* Jugadores */}
             <div className="space-y-2.5">
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Jugadores anotados
@@ -150,7 +149,6 @@ export default async function PartidoPage({
               </div>
             </div>
 
-            {/* Acciones */}
             <MatchActions
               matchId={match.id}
               matchTitle={match.title}
@@ -168,6 +166,11 @@ export default async function PartidoPage({
             />
           </CardContent>
         </Card>
+
+        {/* Chat — solo para participantes */}
+        {isParticipant && (
+          <MatchChat matchId={match.id} currentUserId={session.user.id} />
+        )}
       </div>
     </div>
   );
