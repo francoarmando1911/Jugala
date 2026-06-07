@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Conectá con jugadores de tenis, pádel y fútbol según ubicación, nivel y disponibilidad.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0a0f0d",
+    background_color: "#13150F",
     theme_color: "#a3e635",
     icons: [
       {

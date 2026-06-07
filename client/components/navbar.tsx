@@ -9,13 +9,83 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { authClient } from "@/lib/auth-client";
 
-const publicLinks = [{ href: "/como-funciona", label: "Cómo funciona" }];
+const publicLinks: { href: string; label: string }[] = [];
 
 const authLinks = [
   { href: "/partidos", label: "Partidos" },
   { href: "/partidos/crear", label: "Crear partido" },
   { href: "/dashboard", label: "Mi perfil" },
 ];
+
+const ARCH = "var(--font-archivo), Archivo, sans-serif";
+const INK = "#13150F";
+const LIME = "#a3e635";
+
+function JugalaWordmark({ size = 20 }: { size?: number }) {
+  const dashH = Math.max(size * 0.075, 1.5);
+  const dashMt = size * 0.10;
+  return (
+    <div className="inline-block relative">
+      <div
+        style={{
+          fontFamily: ARCH,
+          fontWeight: 800,
+          fontStyle: "italic",
+          fontSize: size,
+          letterSpacing: "-0.04em",
+          lineHeight: 1,
+          whiteSpace: "nowrap",
+        }}
+      >
+        <span className="text-[#a3e635] dark:text-[#a3e635]">J</span>
+        <span className="text-foreground">ugala</span>
+      </div>
+      <div
+        style={{
+          height: dashH,
+          marginTop: dashMt,
+          marginLeft: size * 0.04,
+          borderRadius: 99,
+          background: LIME,
+          clipPath: "polygon(0 0, 100% 0, 93% 100%, 0 100%)",
+          transform: "skewX(-12deg)",
+          transformOrigin: "left",
+        }}
+      />
+    </div>
+  );
+}
+
+function JSquircle({ size = 32 }: { size?: number }) {
+  const r = size * 0.235;
+  const fs = size * 0.6;
+  return (
+    <div
+      className="flex items-center justify-center shrink-0 dark:bg-[#a3e635]"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: r,
+        background: INK,
+      }}
+    >
+      <span
+        className="dark:text-[#13150F]"
+        style={{
+          fontFamily: ARCH,
+          fontWeight: 800,
+          fontStyle: "italic",
+          fontSize: fs,
+          lineHeight: 1,
+          color: LIME,
+          transform: "translateX(-2%)",
+        }}
+      >
+        J
+      </span>
+    </div>
+  );
+}
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
@@ -38,28 +108,8 @@ export function Navbar() {
           href={session ? "/dashboard" : "/"}
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0a0f0d] dark:bg-[#a3e635]">
-            <span
-              className="text-[17px] leading-none text-[#a3e635] dark:text-[#0a0f0d]"
-              style={{
-                fontFamily: "var(--font-archivo), 'Archivo', sans-serif",
-                fontWeight: 800,
-                fontStyle: "italic",
-              }}
-            >
-              J
-            </span>
-          </div>
-          <span
-            className="text-lg tracking-tight text-foreground"
-            style={{
-              fontFamily: "var(--font-archivo), 'Archivo', sans-serif",
-              fontWeight: 800,
-              fontStyle: "italic",
-            }}
-          >
-            jugala
-          </span>
+          <JSquircle size={32} />
+          <JugalaWordmark size={20} />
         </Link>
 
         {/* Desktop nav */}
