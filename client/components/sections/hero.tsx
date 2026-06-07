@@ -1,78 +1,102 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Trophy, Users } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+const B = { ink: "#0B0D08", lime: "#B6F23B", paper: "#FAFAF6" };
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Glow effect de fondo */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-primary/20 blur-3xl opacity-50" />
-      </div>
-
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(182,242,59,0.13), transparent 60%), ${B.ink}`,
+      }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-          {/* Badge superior */}
-          <Badge
-            variant="secondary"
-            className="mb-6 px-4 py-1.5 text-xs font-medium tracking-wide"
+          {/* Badge */}
+          <div
+            className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "rgba(255,255,255,0.8)",
+            }}
           >
             🎾 Tenis · Pádel · Fútbol
-          </Badge>
+          </div>
 
           {/* Título */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+          <h1
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
+            style={{
+              fontFamily: "var(--font-archivo), Archivo, sans-serif",
+              color: B.paper,
+            }}
+          >
             Encontrá con quién{" "}
-            <span className="bg-gradient-to-r from-primary to-chart-3 bg-clip-text text-transparent">
-              jugar
-            </span>
-            .
+            <span style={{ color: B.lime }}>jugar</span>.
           </h1>
 
           {/* Subtítulo */}
-          <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+          <p
+            className="mt-6 text-lg sm:text-xl max-w-2xl leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.55)" }}
+          >
             Conectate con jugadores de tu nivel, en tu zona y en tus horarios.
             Sumate a partidos abiertos o creá los tuyos en menos de un minuto.
           </p>
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
-            <Button size="lg" asChild className="group">
-              <Link href="/registro">
-                Empezar gratis
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/partidos">Ver partidos cerca</Link>
-            </Button>
+            <Link
+              href="/registro"
+              className="group inline-flex items-center gap-2 rounded-full px-7 py-3 text-base font-semibold transition-all hover:brightness-110"
+              style={{ background: B.lime, color: B.ink }}
+            >
+              Empezar gratis
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/partidos"
+              className="inline-flex items-center rounded-full px-7 py-3 text-base font-semibold transition-colors hover:bg-white/10"
+              style={{
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: B.paper,
+              }}
+            >
+              Ver partidos cerca
+            </Link>
           </div>
 
-          {/* Stats / proof */}
-          <div className="mt-16 grid grid-cols-3 gap-8 sm:gap-12 pt-8 border-t border-border/40 w-full max-w-2xl">
-            <div className="flex flex-col items-center gap-2">
-              <Users className="h-5 w-5 text-primary" />
-              <div className="text-2xl font-bold tabular-nums">+1.2k</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                Jugadores
+          {/* Stats */}
+          <div
+            className="mt-16 grid grid-cols-3 gap-8 sm:gap-12 pt-8 w-full max-w-2xl"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+          >
+            {[
+              { icon: Users, value: "+1.2k", label: "Jugadores" },
+              { icon: Trophy, value: "450", label: "Partidos" },
+              { icon: MapPin, value: "30+", label: "Zonas" },
+            ].map(({ icon: Icon, value, label }) => (
+              <div key={label} className="flex flex-col items-center gap-2">
+                <Icon
+                  className="h-5 w-5"
+                  style={{ color: B.lime }}
+                />
+                <div
+                  className="text-2xl font-bold tabular-nums"
+                  style={{ color: B.paper }}
+                >
+                  {value}
+                </div>
+                <div
+                  className="text-xs uppercase tracking-wide"
+                  style={{ color: "rgba(255,255,255,0.4)" }}
+                >
+                  {label}
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <Trophy className="h-5 w-5 text-primary" />
-              <div className="text-2xl font-bold tabular-nums">450</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                Partidos
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <MapPin className="h-5 w-5 text-primary" />
-              <div className="text-2xl font-bold tabular-nums">30+</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                Zonas
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
