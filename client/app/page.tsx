@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Hero } from "@/components/sections/hero";
 import { Features } from "@/components/sections/features";
+import { AddToHome } from "@/components/sections/add-to-home";
 
 export default async function HomePage() {
   const session = await auth.api.getSession({
@@ -17,6 +18,7 @@ export default async function HomePage() {
     <main>
       <Hero />
       <Features />
+      <AddToHome />
     </main>
   );
 }
