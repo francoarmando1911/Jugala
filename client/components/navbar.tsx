@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -90,7 +90,13 @@ function JSquircle({ size = 32 }: { size?: number }) {
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
+
+  // Close menu on route change
+  React.useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -99,6 +105,11 @@ export function Navbar() {
   };
 
   const navLinks = session ? authLinks : publicLinks;
+
+  const isActive = (href: string) => {
+    if (href === "/dashboard") return pathname === "/dashboard";
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
@@ -118,7 +129,11 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent"
+              className={`px-4 py-2 text-sm font-medium transition-colors rounded-md ${
+                isActive(link.href)
+                  ? "text-[#a3e635]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+              }`}
             >
               {link.label}
             </Link>
@@ -171,16 +186,20 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — overlay, not push */}
       {open && (
-        <div className="md:hidden border-t border-border/40 bg-background animate-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden absolute left-0 right-0 top-full border-t border-border/40 bg-background backdrop-blur-xl animate-in slide-in-from-top-2 duration-200 shadow-lg">
           <nav className="mx-auto max-w-7xl px-4 py-4 flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="px-4 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent"
+                className={`px-4 py-3 text-base font-medium transition-colors rounded-md ${
+                  isActive(link.href)
+                    ? "text-[#a3e635] bg-[#a3e635]/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                }`}
               >
                 {link.label}
               </Link>
