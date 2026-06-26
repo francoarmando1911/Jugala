@@ -14,7 +14,7 @@ const publicLinks: { href: string; label: string }[] = [];
 const authLinks = [
   { href: "/partidos", label: "Partidos" },
   { href: "/partidos/crear", label: "Crear partido" },
-  { href: "/dashboard", label: "Mi perfil" },
+  { href: "/perfil/editar", label: "Mi perfil" }
 ];
 
 const ARCH = "var(--font-archivo), Archivo, sans-serif";
