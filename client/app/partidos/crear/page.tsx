@@ -123,15 +123,15 @@ export default function CrearPartidoPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div>
+            <div className="min-w-0">
               {fieldLabel("Fecha")}
               <input name="date" type="date" min={today} required
-                className={inputClass} style={inputStyle} />
+                className={`${inputClass} min-w-0`} style={inputStyle} />
             </div>
-            <div>
+            <div className="min-w-0">
               {fieldLabel("Hora")}
               <input name="time" type="time" required
-                className={inputClass} style={inputStyle} />
+                className={`${inputClass} min-w-0`} style={inputStyle} />
             </div>
           </div>
 
