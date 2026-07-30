@@ -33,20 +33,7 @@ Encontrar con quién jugar es uno de los principales obstáculos del deporte ama
 
 ## Design system
 
-Paleta oscura deportiva con acentos lima:
-
-| Token | Valor |
-| --- | --- |
-| `bg` | `#0B0D08` |
-| `card` | `#181B11` |
-| `lime` | `#B6F23B` |
-| `blue` | `#5B9BFF` |
-| `orange` | `#E9885B` |
-| `text` | `#F5F6F1` |
-
 Componentes reutilizables: `SportGlyph`, `SportTile`, `LevelPill`, `Avatar`, `AvatarStack`.
-
-Logo Kinetic: Archivo 800 Italic con speed-dash underline.
 
 ## Estructura del repositorio
 
