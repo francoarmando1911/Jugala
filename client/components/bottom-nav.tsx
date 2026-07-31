@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Home, Search, Plus, MessageCircle, User } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
+/** @description Items de navegación del bottom bar con sus rutas e íconos */
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Inicio", icon: Home },
   { href: "/partidos", label: "Partidos", icon: Search },
@@ -13,12 +14,20 @@ const NAV_ITEMS = [
   { href: "/perfil/editar", label: "Perfil", icon: User },
 ];
 
+/**
+ * @description Barra de navegación inferior con efecto liquid glass.
+ * Solo visible en mobile para usuarios logueados.
+ * Incluye 5 items: Inicio, Partidos, Crear (botón elevado lima), Chat y Perfil.
+ * Muestra indicador activo con glow y dot lima.
+ */
 export function BottomNav() {
   const pathname = usePathname();
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
 
-  if (!session) return null;
+  /* Esperar a que la sesión se resuelva para evitar errores de hidratación */
+  if (isPending || !session) return null;
 
+  /** @description Determina si una ruta está activa según el pathname actual */
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     if (href === "/perfil/editar") return pathname.startsWith("/perfil");
@@ -27,14 +36,14 @@ export function BottomNav() {
 
   return (
     <>
-      {/* Spacer so content doesn't hide behind the bar */}
+      {/* Espaciador para que el contenido no quede detrás de la barra */}
       <div className="h-28 md:hidden" />
 
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
         style={{ paddingBottom: "20px" }}
       >
-        {/* Liquid glass container */}
+        {/* Contenedor con efecto liquid glass */}
         <div
           className="mx-3 mb-10 rounded-2xl border border-white/[0.08]"
           style={{
@@ -45,7 +54,7 @@ export function BottomNav() {
               "0 8px 32px rgba(0,0,0,0.4), inset 0 0.5px 0 rgba(255,255,255,0.06), inset 0 -0.5px 0 rgba(0,0,0,0.3)",
           }}
         >
-          {/* Top edge highlight */}
+          {/* Highlight del borde superior */}
           <div
             className="absolute inset-x-0 top-0 h-px"
             style={{
@@ -58,6 +67,7 @@ export function BottomNav() {
               const active = isActive(item.href);
               const Icon = item.icon;
 
+              /* Botón central elevado para crear partido */
               if (item.isAction) {
                 return (
                   <Link
@@ -84,7 +94,7 @@ export function BottomNav() {
                   href={item.href}
                   className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-300 active:scale-90"
                 >
-                  {/* Active glow background */}
+                  {/* Fondo con glow radial cuando está activo */}
                   {active && (
                     <div
                       className="absolute inset-0 rounded-xl transition-all duration-500 ease-out"
@@ -114,7 +124,7 @@ export function BottomNav() {
                     {item.label}
                   </span>
 
-                  {/* Active dot indicator */}
+                  {/* Indicador de punto activo */}
                   {active && (
                     <div
                       className="absolute -bottom-0.5 w-1 h-1 rounded-full transition-all duration-500"

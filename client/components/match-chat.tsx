@@ -5,12 +5,14 @@ import { getPusherClient } from "@/lib/pusher-client";
 import { sendMessage } from "@/app/actions/message";
 import { MessageCircle, Send, ChevronDown, ChevronUp } from "lucide-react";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line2: "rgba(255,255,255,0.055)",
   lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)", text: "#F5F6F1",
   dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
 };
 
+/** @description Tipo de un mensaje del chat */
 type ChatMessage = {
   id: string;
   content: string;
@@ -18,6 +20,13 @@ type ChatMessage = {
   user: { id: string; name: string };
 };
 
+/**
+ * @description Chat en tiempo real de un partido vía Pusher Channels.
+ * Carga mensajes existentes por API, escucha nuevos mensajes en tiempo real
+ * y permite enviar mensajes. Colapsable con header clickeable.
+ * @param matchId - ID del partido al que pertenece el chat
+ * @param currentUserId - ID del usuario actual para diferenciar mensajes propios
+ */
 export function MatchChat({
   matchId,
   currentUserId,
@@ -33,6 +42,7 @@ export function MatchChat({
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  /* Cargar mensajes existentes al montar el componente */
   useEffect(() => {
     fetch(`/api/matches/${matchId}/messages`)
       .then((res) => res.json())
@@ -40,6 +50,7 @@ export function MatchChat({
       .finally(() => setLoading(false));
   }, [matchId]);
 
+  /* Suscribirse al canal de Pusher para recibir mensajes en tiempo real */
   useEffect(() => {
     const pusher = getPusherClient();
     const channel = pusher.subscribe(`match-${matchId}`);
@@ -52,10 +63,12 @@ export function MatchChat({
     return () => { channel.unbind_all(); pusher.unsubscribe(`match-${matchId}`); };
   }, [matchId]);
 
+  /* Auto-scroll al último mensaje cuando se agregan mensajes o se expande el chat */
   useEffect(() => {
     if (expanded) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, expanded]);
 
+  /** @description Envía un mensaje vía server action y restaura el input en caso de error */
   const handleSend = async () => {
     if (!input.trim() || sending) return;
     const content = input.trim();
@@ -67,16 +80,18 @@ export function MatchChat({
     inputRef.current?.focus();
   };
 
+  /** @description Envía el mensaje al presionar Enter (sin Shift) */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
   };
 
+  /** @description Formatea un timestamp ISO a hora local (HH:MM) */
   const formatTime = (dateStr: string) =>
     new Date(dateStr).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: B.card, border: `1px solid ${B.line2}` }}>
-      {/* Header */}
+      {/* Encabezado colapsable del chat */}
       <div
         className="flex items-center justify-between px-5 py-3.5 cursor-pointer select-none"
         onClick={() => setExpanded((v) => !v)}
@@ -102,7 +117,7 @@ export function MatchChat({
         <>
           <div style={{ height: 1, background: B.line2 }} />
 
-          {/* Messages */}
+          {/* Lista de mensajes */}
           <div className="max-h-80 min-h-[120px] overflow-y-auto px-4 py-3" style={{ background: "rgba(255,255,255,0.02)" }}>
             {loading ? (
               <p className="py-8 text-center text-sm" style={{ color: B.faint }}>Cargando mensajes...</p>
@@ -115,11 +130,13 @@ export function MatchChat({
                   const showName = !isMe && (i === 0 || messages[i - 1].user.id !== msg.user.id);
                   return (
                     <div key={msg.id} className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
+                      {/* Nombre del remitente (solo en mensajes ajenos y cuando cambia el autor) */}
                       {showName && (
                         <span className="mb-0.5 px-1 text-[11px] font-semibold" style={{ color: B.lime }}>
                           {msg.user.name}
                         </span>
                       )}
+                      {/* Burbuja del mensaje — lima para propios, gris para ajenos */}
                       <div
                         className={`max-w-[80%] rounded-2xl px-3 py-1.5 text-sm ${isMe ? "rounded-br-sm" : "rounded-bl-sm"}`}
                         style={{
@@ -143,7 +160,7 @@ export function MatchChat({
 
           <div style={{ height: 1, background: B.line2 }} />
 
-          {/* Input */}
+          {/* Campo de entrada y botón de envío */}
           <div className="flex items-center gap-2 px-4 py-3">
             <input
               ref={inputRef}

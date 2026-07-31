@@ -23,12 +23,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+/** @description Deportes disponibles con emoji y etiqueta */
 const SPORTS = [
   { value: "TENNIS" as const, label: "Tenis", emoji: "🎾" },
   { value: "PADEL" as const, label: "Pádel", emoji: "🏓" },
   { value: "FOOTBALL" as const, label: "Fútbol", emoji: "⚽" },
 ];
 
+/** @description Niveles de juego disponibles */
 const LEVELS = [
   { value: "BEGINNER" as const, label: "Principiante" },
   { value: "INTERMEDIATE" as const, label: "Intermedio" },
@@ -36,6 +38,7 @@ const LEVELS = [
   { value: "COMPETITIVE" as const, label: "Competitivo" },
 ];
 
+/** @description Días de la semana para disponibilidad */
 const DAYS = [
   { value: "lunes", label: "Lunes" },
   { value: "martes", label: "Martes" },
@@ -49,6 +52,11 @@ const DAYS = [
 type SportKey = "TENNIS" | "PADEL" | "FOOTBALL";
 type LevelKey = "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "COMPETITIVE";
 
+/**
+ * @description Página de onboarding para completar el perfil del jugador.
+ * Permite seleccionar deportes, nivel por deporte, zona de juego,
+ * disponibilidad semanal y bio. Redirige al dashboard tras guardar.
+ */
 export default function CompletarPerfilPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -64,6 +72,7 @@ export default function CompletarPerfilPage() {
   });
   const [availability, setAvailability] = useState<Record<string, boolean>>({});
 
+  /** @description Agrega o quita un deporte de la selección */
   const toggleSport = (sport: SportKey) => {
     const next = new Set(selectedSports);
     if (next.has(sport)) {
@@ -74,6 +83,7 @@ export default function CompletarPerfilPage() {
     setSelectedSports(next);
   };
 
+  /** @description Valida los campos y guarda el perfil vía server action */
   const handleSubmit = async () => {
     setError("");
 
@@ -118,7 +128,7 @@ export default function CompletarPerfilPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          {/* DEPORTES */}
+          {/* Selector de deportes */}
           <div className="space-y-3">
             <Label className="text-base font-semibold">
               ¿Qué deportes jugás?
@@ -145,7 +155,7 @@ export default function CompletarPerfilPage() {
             </div>
           </div>
 
-          {/* NIVEL POR DEPORTE */}
+          {/* Nivel por deporte seleccionado */}
           {selectedSports.size > 0 && (
             <div className="space-y-3">
               <Label className="text-base font-semibold">
@@ -189,7 +199,7 @@ export default function CompletarPerfilPage() {
             </div>
           )}
 
-          {/* ZONA */}
+          {/* Zona de juego */}
           <div className="space-y-2">
             <Label htmlFor="zone" className="text-base font-semibold">
               Zona de juego
@@ -205,7 +215,7 @@ export default function CompletarPerfilPage() {
             </p>
           </div>
 
-          {/* DISPONIBILIDAD */}
+          {/* Disponibilidad semanal */}
           <div className="space-y-3">
             <Label className="text-base font-semibold">
               ¿Qué días podés jugar?
@@ -231,7 +241,7 @@ export default function CompletarPerfilPage() {
             </div>
           </div>
 
-          {/* BIO */}
+          {/* Bio corta opcional */}
           <div className="space-y-2">
             <Label htmlFor="bio" className="text-base font-semibold">
               Bio corta{" "}
@@ -252,7 +262,7 @@ export default function CompletarPerfilPage() {
             </p>
           </div>
 
-          {/* ERROR Y SUBMIT */}
+          {/* Error y botón de envío */}
           {error && (
             <p className="text-sm text-red-500 text-center">{error}</p>
           )}

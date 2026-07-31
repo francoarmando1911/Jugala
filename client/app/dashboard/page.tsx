@@ -7,6 +7,7 @@ import { Plus, Search, CalendarDays, MapPin } from "lucide-react";
 import { SportBadge } from "@/components/sport-badge";
 import { SportTile, LevelPill, Avatar, AvatarStack } from "@/components/sport-icon";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
   line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", blue: "#5B9BFF",
@@ -14,11 +15,17 @@ const B = {
   faint: "rgba(255,255,255,0.40)", limeDim: "rgba(182,242,59,0.14)",
 };
 
+/** @description Mapeo de niveles a etiquetas en español */
 const levelLabels: Record<string, string> = {
   BEGINNER: "Principiante", INTERMEDIATE: "Intermedio",
   ADVANCED: "Avanzado", COMPETITIVE: "Competitivo",
 };
 
+/**
+ * @description Página principal del dashboard del usuario.
+ * Muestra saludo, acciones rápidas, estadísticas, próximos partidos y resumen del perfil.
+ * Redirige a login si no hay sesión o a completar perfil si no hizo onboarding.
+ */
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
@@ -31,6 +38,7 @@ export default async function DashboardPage() {
 
   const isAdmin = (user as unknown as { role: string }).role === "ADMIN";
 
+  /* Obtener los próximos partidos del usuario */
   const myUpcoming = await prisma.match.findMany({
     where: {
       date: { gte: new Date() },
@@ -47,6 +55,7 @@ export default async function DashboardPage() {
     take: 5,
   });
 
+  /* Contar partidos jugados y organizados */
   const totalPlayed = await prisma.participation.count({
     where: { userId: session.user.id, status: "CONFIRMED", match: { date: { lt: new Date() } } },
   });
@@ -55,6 +64,7 @@ export default async function DashboardPage() {
     where: { organizerId: session.user.id },
   });
 
+  /* Parsear disponibilidad semanal del perfil */
   const availability = user.availability
     ? (JSON.parse(user.availability) as Record<string, boolean>)
     : {};
@@ -67,7 +77,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen" style={{ background: B.bg }}>
       <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
-        {/* Header */}
+        {/* Encabezado con badge de admin y avatar */}
         <div className="flex items-center justify-between mb-1">
           <div />
           <div className="flex items-center gap-3">
@@ -80,7 +90,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Greeting */}
+        {/* Saludo personalizado */}
         <div className="mb-5">
           <h1
             className="text-[30px] font-extrabold tracking-tight leading-tight"
@@ -93,7 +103,7 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        {/* Actions */}
+        {/* Botones de acción rápida */}
         <div className="flex gap-3 mb-5">
           <Link
             href="/partidos/crear"
@@ -113,7 +123,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {/* Stats */}
+        {/* Estadísticas del jugador */}
         <div className="grid grid-cols-3 gap-2.5 mb-7">
           {[
             { n: myUpcoming.length, label: "Próximos", color: B.lime },
@@ -138,7 +148,7 @@ export default async function DashboardPage() {
           ))}
         </div>
 
-        {/* Upcoming matches */}
+        {/* Próximos partidos del usuario */}
         <div className="mb-7">
           <div className="flex items-center justify-between mb-3">
             <h2
@@ -186,6 +196,7 @@ export default async function DashboardPage() {
                       className="rounded-2xl p-3.5 transition-all hover:brightness-110 cursor-pointer"
                       style={{ background: B.card, border: `1px solid ${B.line2}` }}
                     >
+                      {/* Info del partido: deporte, título, fecha, ubicación */}
                       <div className="flex items-center gap-3 mb-3">
                         <SportTile sport={match.sport} size={46} />
                         <div className="flex-1 min-w-0">
@@ -202,6 +213,7 @@ export default async function DashboardPage() {
                         <LevelPill level="INTERMEDIATE" sport={match.sport} />
                       </div>
                       <div style={{ height: 1, background: B.line2 }} />
+                      {/* Participantes y botón de unirse */}
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center gap-2.5">
                           <AvatarStack names={playerNames.slice(0, 3)} size={26} />
@@ -228,7 +240,7 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        {/* Profile summary */}
+        {/* Resumen del perfil del usuario */}
         <div
           className="rounded-2xl p-4"
           style={{ background: B.card, border: `1px solid ${B.line2}` }}
@@ -251,12 +263,14 @@ export default async function DashboardPage() {
             </p>
           )}
 
+          {/* Deportes y niveles del jugador */}
           <div className="flex flex-wrap gap-2 mb-3">
             {user.profiles.map((profile: { id: string; sport: string; level: string }) => (
               <SportBadge key={profile.id} sport={profile.sport} level={profile.level} />
             ))}
           </div>
 
+          {/* Zona de juego */}
           {user.zone && (
             <div className="flex items-center gap-1.5 text-sm mb-2" style={{ color: B.dim }}>
               <MapPin className="h-3.5 w-3.5 shrink-0" style={{ color: B.lime }} />
@@ -264,6 +278,7 @@ export default async function DashboardPage() {
             </div>
           )}
 
+          {/* Días de disponibilidad */}
           {activeDays.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-2">
               {activeDays.map((day) => (

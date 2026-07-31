@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { authClient } from "@/lib/auth-client";
 
+/** @description Links visibles para usuarios no autenticados */
 const publicLinks: { href: string; label: string }[] = [];
 
+/** @description Links de navegación para usuarios autenticados */
 const authLinks = [
   { href: "/partidos", label: "Partidos" },
   { href: "/partidos/crear", label: "Crear partido" },
@@ -21,6 +23,7 @@ const ARCH = "var(--font-archivo), Archivo, sans-serif";
 const INK = "#13150F";
 const LIME = "#a3e635";
 
+/** @description Wordmark "Jugala" con la J en lima, dash decorativo y tipografía Archivo */
 function JugalaWordmark({ size = 20 }: { size?: number }) {
   const dashH = Math.max(size * 0.075, 1.5);
   const dashMt = size * 0.10;
@@ -56,6 +59,7 @@ function JugalaWordmark({ size = 20 }: { size?: number }) {
   );
 }
 
+/** @description Ícono squircle con la "J" de Jugala para el navbar */
 function JSquircle({ size = 32 }: { size?: number }) {
   const r = size * 0.235;
   const fs = size * 0.6;
@@ -87,17 +91,23 @@ function JSquircle({ size = 32 }: { size?: number }) {
   );
 }
 
+/**
+ * @description Barra de navegación superior global.
+ * Incluye logo, links de navegación (desktop), toggle de tema, info de sesión
+ * y menú mobile como overlay con highlight lima en la página activa.
+ */
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
 
-  // Close menu on route change
+  /* Cerrar menú mobile al cambiar de ruta */
   React.useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
+  /** @description Cierra sesión y redirige a la landing */
   const handleSignOut = async () => {
     await authClient.signOut();
     router.push("/");
@@ -106,6 +116,7 @@ export function Navbar() {
 
   const navLinks = session ? authLinks : publicLinks;
 
+  /** @description Determina si un link está activo según el pathname actual */
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
     return pathname.startsWith(href);
@@ -114,7 +125,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
+        {/* Logo — redirige al dashboard si hay sesión, o a la landing */}
         <Link
           href={session ? "/dashboard" : "/"}
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
@@ -123,7 +134,7 @@ export function Navbar() {
           <JugalaWordmark size={20} />
         </Link>
 
-        {/* Desktop nav */}
+        {/* Navegación desktop */}
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
@@ -140,7 +151,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Right actions */}
+        {/* Acciones del lado derecho */}
         <div className="flex items-center gap-2">
           <ThemeToggle />
 
@@ -173,7 +184,7 @@ export function Navbar() {
             </div>
           )}
 
-          {/* Mobile toggle */}
+          {/* Botón hamburguesa mobile */}
           <Button
             variant="ghost"
             size="icon"
@@ -186,7 +197,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu — overlay, not push */}
+      {/* Menú mobile — overlay sobre el contenido */}
       {open && (
         <div className="md:hidden absolute left-0 right-0 top-full border-t border-border/40 bg-background backdrop-blur-xl animate-in slide-in-from-top-2 duration-200 shadow-lg">
           <nav className="mx-auto max-w-7xl px-4 py-4 flex flex-col gap-1">
@@ -204,6 +215,7 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {/* Sesión: nombre, email y cerrar sesión / Botones de auth */}
             <div className="flex flex-col gap-2 pt-3 mt-2 border-t border-border/40">
               {session ? (
                 <>

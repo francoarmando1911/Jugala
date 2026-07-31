@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+/** @description Opciones de deporte para el filtro, incluyendo "Todos" */
 const SPORTS = [
   { value: "ALL", label: "Todos los deportes" },
   { value: "TENNIS", label: "🎾 Tenis" },
@@ -18,16 +19,22 @@ const SPORTS = [
   { value: "FOOTBALL", label: "⚽ Fútbol" },
 ];
 
+/** @description Props del componente de filtros de partidos */
 type Props = {
   currentSport: string;
   currentLocation: string;
 };
 
+/**
+ * @description Filtros de búsqueda de partidos por deporte y ubicación.
+ * Actualiza los query params de la URL al cambiar los valores.
+ */
 export function MatchFilters({ currentSport, currentLocation }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [location, setLocation] = useState(currentLocation);
 
+  /** @description Actualiza los filtros en la URL sin recargar la página */
   const updateFilters = (sport?: string, loc?: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -52,6 +59,7 @@ export function MatchFilters({ currentSport, currentLocation }: Props) {
 
   return (
     <div className="flex flex-col sm:flex-row gap-3">
+      {/* Selector de deporte */}
       <Select
         value={currentSport}
         onValueChange={(value) => updateFilters(value, undefined)}
@@ -68,6 +76,7 @@ export function MatchFilters({ currentSport, currentLocation }: Props) {
         </SelectContent>
       </Select>
 
+      {/* Campo de búsqueda por ubicación — filtra al presionar Enter o perder foco */}
       <div className="flex-1">
         <Input
           placeholder="Buscar por ubicación..."

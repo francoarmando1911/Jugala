@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+/** @description Manifiesto PWA de la aplicación para instalación en dispositivos */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Jugala — Encontrá con quién jugar",

@@ -5,6 +5,14 @@ import { prisma } from "@/lib/prisma";
 import { pusherServer } from "@/lib/pusher";
 import { headers } from "next/headers";
 
+/**
+ * @description Envía un mensaje en el chat de un partido.
+ * Valida que el usuario esté autenticado, sea participante confirmado
+ * y que el mensaje tenga entre 1 y 500 caracteres.
+ * Dispara un evento en tiempo real vía Pusher.
+ * @param matchId - ID del partido donde se envía el mensaje
+ * @param content - Contenido del mensaje
+ */
 export async function sendMessage({
   matchId,
   content,
@@ -25,7 +33,7 @@ export async function sendMessage({
     return { error: "El mensaje debe tener entre 1 y 500 caracteres." };
   }
 
-  // Verify user is a participant
+  /* Verificar que el usuario sea participante del partido */
   const participation = await prisma.participation.findUnique({
     where: {
       matchId_userId: {
@@ -52,7 +60,7 @@ export async function sendMessage({
     },
   });
 
-  // Trigger realtime event
+  /* Disparar evento en tiempo real para actualizar el chat */
   await pusherServer.trigger(`match-${matchId}`, "new-message", {
     id: message.id,
     content: message.content,

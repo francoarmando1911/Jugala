@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+/** @description Datos de entrada para crear un partido */
 type CreateMatchInput = {
   sport: "TENNIS" | "PADEL" | "FOOTBALL";
   title: string;
@@ -16,6 +17,11 @@ type CreateMatchInput = {
   maxPlayers: number;
 };
 
+/**
+ * @description Crea un nuevo partido y agrega al organizador como primer participante.
+ * Redirige a la página del partido creado.
+ * @param input - Datos del partido (deporte, título, fecha, hora, ubicación, cupos)
+ */
 export async function createMatch(input: CreateMatchInput) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -52,6 +58,12 @@ export async function createMatch(input: CreateMatchInput) {
   redirect(`/partidos/${match.id}`);
 }
 
+/**
+ * @description Permite a un usuario unirse a un partido abierto.
+ * Valida que el partido exista, esté abierto, no esté lleno y que el usuario no esté ya anotado.
+ * Cambia el estado a FULL si se completan los cupos.
+ * @param matchId - ID del partido al que unirse
+ */
 export async function joinMatch(matchId: string) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -98,7 +110,7 @@ export async function joinMatch(matchId: string) {
     },
   });
 
-  // Si se llenó, cambiar estado a FULL
+  /* Si se completaron los cupos, cambiar estado a FULL */
   if (confirmedCount + 1 >= match.maxPlayers) {
     await prisma.match.update({
       where: { id: matchId },
@@ -110,6 +122,12 @@ export async function joinMatch(matchId: string) {
   return { success: true };
 }
 
+/**
+ * @description Permite a un usuario abandonar un partido.
+ * El organizador no puede abandonar su propio partido.
+ * Cambia el estado de FULL a OPEN si se libera un cupo.
+ * @param matchId - ID del partido a abandonar
+ */
 export async function leaveMatch(matchId: string) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -139,7 +157,7 @@ export async function leaveMatch(matchId: string) {
     },
   });
 
-  // Si estaba FULL, volver a OPEN
+  /* Si estaba lleno, volver a abrir el partido */
   if (match.status === "FULL") {
     await prisma.match.update({
       where: { id: matchId },
@@ -151,6 +169,11 @@ export async function leaveMatch(matchId: string) {
   return { success: true };
 }
 
+/**
+ * @description Elimina un partido. Solo el organizador puede hacerlo.
+ * Redirige a la lista de partidos tras la eliminación.
+ * @param matchId - ID del partido a eliminar
+ */
 export async function deleteMatch(matchId: string) {
   const session = await auth.api.getSession({
     headers: await headers(),

@@ -1,6 +1,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+/**
+ * @description Componente de estado vacío reutilizable.
+ * Muestra un ícono, título, descripción y opcionalmente un botón de acción.
+ * Se usa cuando una lista no tiene elementos (partidos, mensajes, etc).
+ * @param icon - Ícono decorativo a mostrar
+ * @param title - Título del estado vacío
+ * @param description - Texto descriptivo
+ * @param actionLabel - Texto del botón de acción (opcional)
+ * @param actionHref - Ruta del botón de acción (opcional)
+ */
 export function EmptyState({
   icon,
   title,

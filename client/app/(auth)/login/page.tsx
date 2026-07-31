@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+/** @description Ícono SVG del logo de Google para los botones de OAuth */
 function GoogleIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24">
@@ -20,12 +21,17 @@ function GoogleIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
+/**
+ * @description Página de inicio de sesión con soporte para email/contraseña y Google OAuth.
+ * Redirige al dashboard tras autenticación exitosa.
+ */
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  /** @description Maneja el envío del formulario de login con email y contraseña */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -49,6 +55,7 @@ export default function LoginPage() {
     router.push("/dashboard");
   };
 
+  /** @description Inicia el flujo de autenticación con Google OAuth */
   const handleGoogleSignIn = async () => {
     setError("");
     setGoogleLoading(true);
@@ -69,6 +76,7 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+            {/* Botón de inicio de sesión con Google */}
             <Button
               variant="outline"
               className="w-full"
@@ -79,6 +87,7 @@ export default function LoginPage() {
               {googleLoading ? "Redirigiendo..." : "Continuar con Google"}
             </Button>
 
+            {/* Separador visual */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -88,6 +97,7 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Formulario de email y contraseña */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>

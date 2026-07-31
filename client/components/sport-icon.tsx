@@ -1,9 +1,16 @@
+/** @description Configuración de deportes con etiqueta y color distintivo */
 const SPORTS: Record<string, { label: string; color: string }> = {
   TENNIS: { label: "Tenis", color: "#E9D24B" },
   PADEL: { label: "Pádel", color: "#B6F23B" },
   FOOTBALL: { label: "Fútbol", color: "#5B9BFF" },
 };
 
+/**
+ * @description Ícono SVG del deporte (pelota de tenis, pelota de fútbol o paleta de pádel).
+ * @param sport - Código del deporte (TENNIS, PADEL, FOOTBALL)
+ * @param size - Tamaño del ícono en píxeles
+ * @param color - Color override (por defecto usa el color del deporte)
+ */
 export function SportGlyph({ sport, size = 18, color }: { sport: string; size?: number; color?: string }) {
   const c = color || SPORTS[sport]?.color || "#B6F23B";
   if (sport === "TENNIS") return (
@@ -19,6 +26,7 @@ export function SportGlyph({ sport, size = 18, color }: { sport: string; size?: 
       <path d="M12 4.5v3M5.4 9.3l2.4 1.8M18.6 9.3l-2.4 1.8M8.6 13.5l-2 2.4M15.4 13.5l2 2.4" stroke={c} strokeWidth="1.5" strokeLinecap="round"/>
     </svg>
   );
+  /* Pádel por defecto */
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <path d="M12 2.5c4 0 7 2.8 7 7 0 4-3 6.5-7 6.5S5 13.5 5 9.5c0-4.2 3-7 7-7z" stroke={c} strokeWidth="1.8"/>
@@ -28,6 +36,12 @@ export function SportGlyph({ sport, size = 18, color }: { sport: string; size?: 
   );
 }
 
+/**
+ * @description Tile cuadrado con fondo tenue del color del deporte y el glyph centrado.
+ * Usado en las tarjetas de partidos.
+ * @param sport - Código del deporte
+ * @param size - Tamaño del tile en píxeles
+ */
 export function SportTile({ sport, size = 46 }: { sport: string; size?: number }) {
   const c = SPORTS[sport]?.color || "#B6F23B";
   return (
@@ -44,8 +58,14 @@ export function SportTile({ sport, size = 46 }: { sport: string; size?: number }
   );
 }
 
+/**
+ * @description Píldora de nivel de juego con color del deporte.
+ * @param level - Código del nivel (BEGINNER, INTERMEDIATE, ADVANCED, COMPETITIVE)
+ * @param sport - Código del deporte para el color (opcional)
+ */
 export function LevelPill({ level, sport }: { level: string; sport?: string }) {
   const color = sport ? (SPORTS[sport]?.color || "#B6F23B") : "#B6F23B";
+  /** @description Mapeo de niveles a etiquetas en español */
   const labels: Record<string, string> = {
     BEGINNER: "Principiante", INTERMEDIATE: "Intermedio",
     ADVANCED: "Avanzado", COMPETITIVE: "Competitivo",
@@ -64,6 +84,13 @@ export function LevelPill({ level, sport }: { level: string; sport?: string }) {
   );
 }
 
+/**
+ * @description Avatar circular del usuario con imagen o iniciales sobre fondo de color.
+ * El color se genera determinísticamente a partir del nombre.
+ * @param name - Nombre del usuario para generar iniciales y color
+ * @param size - Tamaño del avatar en píxeles
+ * @param image - URL o base64 de la foto de perfil (opcional)
+ */
 export function Avatar({ name, size = 34, image }: { name: string; size?: number; image?: string | null }) {
   const palette = ["#5B9BFF","#E9885B","#7FD17F","#C77DFF","#F2A93B","#5BD0C8","#FF8BA0"];
   let h = 0;
@@ -87,7 +114,8 @@ export function Avatar({ name, size = 34, image }: { name: string; size?: number
         style={{ width: size, height: size }}
       />
     );
-  }  return (
+  }  /* Fallback con iniciales sobre fondo de color */
+  return (
     <div
       className="flex items-center justify-center shrink-0 rounded-full"
       style={{
@@ -101,6 +129,12 @@ export function Avatar({ name, size = 34, image }: { name: string; size?: number
   );
 }
 
+/**
+ * @description Stack de avatares superpuestos con borde oscuro.
+ * Usado para mostrar los participantes de un partido de forma compacta.
+ * @param names - Array de nombres de los jugadores
+ * @param size - Tamaño de cada avatar en píxeles
+ */
 export function AvatarStack({ names, size = 26 }: { names: string[]; size?: number }) {
   return (
     <div className="flex">
