@@ -1,9 +1,14 @@
 import Link from "next/link";
 
+/**
+ * @description Logo completo de Jugala con ícono + wordmark.
+ * Usado en el navbar y otros lugares donde se necesita el logo con texto.
+ * @param href - Ruta a la que redirige al clickear (por defecto "/")
+ */
 export function JugalaLogo({ href = "/" }: { href?: string }) {
   return (
     <Link href={href} className="flex items-center gap-2 transition-opacity hover:opacity-80">
-      {/* App icon */}
+      {/* Ícono de la app */}
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0a0f0d]">
         <svg width="20" height="22" viewBox="0 0 20 22" fill="none">
           <text
@@ -31,6 +36,11 @@ export function JugalaLogo({ href = "/" }: { href?: string }) {
   );
 }
 
+/**
+ * @description Ícono standalone de Jugala (sin wordmark).
+ * Usado en contextos donde solo se necesita el ícono cuadrado.
+ * @param size - Tamaño del ícono en píxeles (por defecto 32)
+ */
 export function JugalaIcon({ size = 32 }: { size?: number }) {
   return (
     <div

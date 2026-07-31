@@ -7,8 +7,10 @@ import {
   Zap,
 } from "lucide-react";
 
+/** @description Paleta de colores para la sección de features */
 const B = { ink: "#0B0D08", card: "#121410", lime: "#B6F23B", paper: "#FAFAF6" };
 
+/** @description Lista de features de la plataforma con ícono, título y descripción */
 const features = [
   {
     icon: Search,
@@ -48,6 +50,10 @@ const features = [
   },
 ];
 
+/**
+ * @description Sección de features de la landing page.
+ * Muestra una grilla de 6 tarjetas con las funcionalidades principales de Jugala.
+ */
 export function Features() {
   return (
     <section
@@ -55,6 +61,7 @@ export function Features() {
       style={{ background: B.ink }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Encabezado de la sección */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2
             className="text-3xl sm:text-4xl font-extrabold tracking-tight"
@@ -74,6 +81,7 @@ export function Features() {
           </p>
         </div>
 
+        {/* Grilla de tarjetas de features */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature) => (
             <div

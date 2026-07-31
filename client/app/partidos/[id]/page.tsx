@@ -8,6 +8,7 @@ import { SportTile, LevelPill, Avatar } from "@/components/sport-icon";
 import { MatchActions } from "./match-actions";
 import { MatchChat } from "@/components/match-chat";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
   line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
@@ -15,6 +16,7 @@ const B = {
   ghost: "rgba(255,255,255,0.28)",
 };
 
+/** @description Mapeo de estados del partido a etiqueta, color y fondo */
 const statusLabels: Record<string, { label: string; color: string; bg: string }> = {
   OPEN: { label: "Abierto", color: B.lime, bg: "rgba(182,242,59,0.14)" },
   FULL: { label: "Completo", color: "#E9D24B", bg: "rgba(233,210,75,0.14)" },
@@ -22,6 +24,11 @@ const statusLabels: Record<string, { label: string; color: string; bg: string }>
   CANCELLED: { label: "Cancelado", color: "#FF6B6B", bg: "rgba(255,107,107,0.14)" },
 };
 
+/**
+ * @description Página de detalle de un partido.
+ * Muestra información completa, cupos de jugadores, acciones (unirse/salir/eliminar/compartir)
+ * y chat en tiempo real para los participantes.
+ */
 export default async function PartidoPage({
   params,
 }: {
@@ -60,7 +67,7 @@ export default async function PartidoPage({
   return (
     <div className="min-h-screen" style={{ background: B.bg }}>
       <div className="mx-auto max-w-lg px-4 py-6 sm:px-6">
-        {/* Back */}
+        {/* Volver a la lista de partidos */}
         <Link
           href="/partidos"
           className="inline-flex items-center gap-1 text-sm font-medium mb-5 transition-colors hover:opacity-80"
@@ -69,9 +76,9 @@ export default async function PartidoPage({
           <ChevronLeft className="h-4 w-4" /> Volver
         </Link>
 
-        {/* Card */}
+        {/* Tarjeta principal del partido */}
         <div className="rounded-2xl overflow-hidden" style={{ background: B.card, border: `1px solid ${B.line2}` }}>
-          {/* Header */}
+          {/* Encabezado: deporte y estado */}
           <div className="p-5 pb-4">
             <div className="flex items-center justify-between mb-3">
               <SportTile sport={match.sport} size={50} />
@@ -97,7 +104,7 @@ export default async function PartidoPage({
 
           <div style={{ height: 1, background: B.line2 }} />
 
-          {/* Info rows */}
+          {/* Detalles: fecha, hora, ubicación, jugadores */}
           <div className="p-5 space-y-3.5">
             {[
               { icon: CalendarDays, text: dateFormatted, iconColor: B.lime },
@@ -114,7 +121,7 @@ export default async function PartidoPage({
 
           <div style={{ height: 1, background: B.line2 }} />
 
-          {/* Player slots */}
+          {/* Cupos de jugadores: ocupados y libres */}
           <div className="p-5">
             <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: B.faint }}>
               Jugadores
@@ -167,7 +174,7 @@ export default async function PartidoPage({
 
           <div style={{ height: 1, background: B.line2 }} />
 
-          {/* Actions */}
+          {/* Acciones: unirse, salir, compartir, eliminar */}
           <div className="p-5">
             <MatchActions
               matchId={match.id}
@@ -183,7 +190,7 @@ export default async function PartidoPage({
           </div>
         </div>
 
-        {/* Chat */}
+        {/* Chat en tiempo real — solo visible para participantes */}
         {isParticipant && (
           <div className="mt-4">
             <MatchChat matchId={match.id} currentUserId={session.user.id} />

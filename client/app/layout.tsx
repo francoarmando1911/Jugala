@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/** @description Fuente Archivo 800 Italic para títulos y el logo */
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
@@ -24,6 +25,7 @@ const archivo = Archivo({
   style: ["italic"],
 });
 
+/** @description Metadatos globales del sitio para SEO y Open Graph */
 export const metadata: Metadata = {
   title: "Jugala — Encontrá con quién jugar",
   description:
@@ -36,6 +38,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * @description Layout raíz de la aplicación.
+ * Incluye fuentes, ThemeProvider, Navbar, Footer y BottomNav.
+ * El BottomNav solo se muestra en mobile para usuarios logueados.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

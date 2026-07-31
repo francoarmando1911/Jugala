@@ -7,12 +7,18 @@ import { Search, MapPin } from "lucide-react";
 import { SportTile, LevelPill, AvatarStack } from "@/components/sport-icon";
 import { MatchFilters } from "./match-filters";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
   line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", text: "#F5F6F1",
   dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
 };
 
+/**
+ * @description Página de listado de partidos con filtros por deporte y ubicación.
+ * Muestra partidos abiertos y completos ordenados por fecha ascendente.
+ * Redirige a login si no hay sesión activa.
+ */
 export default async function PartidosPage({
   searchParams,
 }: {
@@ -23,6 +29,7 @@ export default async function PartidosPage({
 
   const params = await searchParams;
 
+  /* Construir filtros de búsqueda según los query params */
   const where: Record<string, unknown> = {
     date: { gte: new Date() },
     status: { in: ["OPEN", "FULL"] },
@@ -48,7 +55,7 @@ export default async function PartidosPage({
   return (
     <div className="min-h-screen" style={{ background: B.bg }}>
       <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
-        {/* Header */}
+        {/* Encabezado de la página */}
         <div className="mb-4">
           <h1
             className="text-2xl font-extrabold tracking-tight"
@@ -64,13 +71,13 @@ export default async function PartidosPage({
           </div>
         </div>
 
-        {/* Filters */}
+        {/* Filtros de deporte y ubicación */}
         <MatchFilters
           currentSport={params.sport || "ALL"}
           currentLocation={params.location || ""}
         />
 
-        {/* Results */}
+        {/* Resultados de búsqueda */}
         {matches.length === 0 ? (
           <div
             className="rounded-2xl py-16 text-center mt-4"
@@ -118,7 +125,7 @@ export default async function PartidosPage({
                       className="rounded-2xl p-3.5 transition-all hover:brightness-110 cursor-pointer"
                       style={{ background: B.card, border: `1px solid ${B.line2}` }}
                     >
-                      {/* Top row */}
+                      {/* Fila superior: deporte, título, fecha, nivel */}
                       <div className="flex items-center gap-3 mb-3">
                         <SportTile sport={match.sport} size={46} />
                         <div className="flex-1 min-w-0">
@@ -134,9 +141,9 @@ export default async function PartidosPage({
                         </div>
                         <LevelPill level="INTERMEDIATE" sport={match.sport} />
                       </div>
-                      {/* Divider */}
+                      {/* Separador */}
                       <div style={{ height: 1, background: B.line2 }} />
-                      {/* Bottom row */}
+                      {/* Fila inferior: participantes y acción */}
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center gap-2.5">
                           {playerNames.length > 0 && (

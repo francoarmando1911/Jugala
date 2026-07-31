@@ -3,6 +3,12 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { prisma } from "./prisma";
 
+/**
+ * @description Configuración del servidor de autenticación Better Auth.
+ * Soporta login con email/contraseña y Google OAuth.
+ * Sesiones de 30 días con actualización diaria.
+ * Usa Prisma como adaptador sobre PostgreSQL (Neon).
+ */
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",

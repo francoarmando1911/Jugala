@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 
+/** @description Configuración visual por deporte: etiqueta, emoji y clases de color */
 const sportConfig: Record<string, { label: string; emoji: string; className: string }> = {
   TENNIS: {
     label: "Tenis",
@@ -18,6 +19,13 @@ const sportConfig: Record<string, { label: string; emoji: string; className: str
   },
 };
 
+/**
+ * @description Badge de deporte con emoji, nombre y nivel opcional.
+ * Usa colores distintos por deporte (verde tenis, ámbar pádel, celeste fútbol).
+ * @param sport - Código del deporte (TENNIS, PADEL, FOOTBALL)
+ * @param level - Nivel del jugador (opcional)
+ * @param size - Tamaño del badge: "sm" o "md"
+ */
 export function SportBadge({
   sport,
   level,
@@ -33,6 +41,7 @@ export function SportBadge({
     className: "bg-muted text-muted-foreground border-border",
   };
 
+  /** @description Mapeo de niveles a etiquetas en español */
   const levelLabels: Record<string, string> = {
     BEGINNER: "Principiante",
     INTERMEDIATE: "Intermedio",
@@ -60,6 +69,11 @@ export function SportBadge({
   );
 }
 
+/**
+ * @description Punto de color indicador de deporte.
+ * Verde para tenis, ámbar para pádel, celeste para fútbol.
+ * @param sport - Código del deporte
+ */
 export function SportDot({ sport }: { sport: string }) {
   const colors: Record<string, string> = {
     TENNIS: "bg-emerald-500",
@@ -71,12 +85,14 @@ export function SportDot({ sport }: { sport: string }) {
   );
 }
 
+/** @description Clases de borde izquierdo por deporte para tarjetas con acento lateral */
 export const sportBorderColors: Record<string, string> = {
   TENNIS: "border-l-emerald-500",
   PADEL: "border-l-amber-500",
   FOOTBALL: "border-l-sky-500",
 };
 
+/** @description Etiquetas de deporte con emoji para uso en textos */
 export const sportLabels: Record<string, string> = {
   TENNIS: "🎾 Tenis",
   PADEL: "🏓 Pádel",

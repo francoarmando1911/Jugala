@@ -6,6 +6,7 @@ import { ChevronLeft, Camera } from "lucide-react";
 import { updateProfile } from "@/app/actions/profile";
 import { SportGlyph } from "@/components/sport-icon";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
   line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
@@ -15,12 +16,14 @@ const B = {
 type SportKey = "TENNIS" | "PADEL" | "FOOTBALL";
 type LevelKey = "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "COMPETITIVE";
 
+/** @description Deportes disponibles para seleccionar */
 const SPORTS = [
   { value: "TENNIS" as const, label: "Tenis" },
   { value: "PADEL" as const, label: "Pádel" },
   { value: "FOOTBALL" as const, label: "Fútbol" },
 ];
 
+/** @description Niveles de juego disponibles */
 const LEVELS = [
   { value: "BEGINNER" as const, label: "Principiante" },
   { value: "INTERMEDIATE" as const, label: "Intermedio" },
@@ -28,6 +31,7 @@ const LEVELS = [
   { value: "COMPETITIVE" as const, label: "Competitivo" },
 ];
 
+/** @description Días de la semana para disponibilidad */
 const DAYS = [
   { value: "lunes", label: "Lunes" },
   { value: "martes", label: "Martes" },
@@ -38,6 +42,12 @@ const DAYS = [
   { value: "domingo", label: "Domingo" },
 ];
 
+/**
+ * @description Redimensiona una imagen a 200x200px con recorte centrado.
+ * Devuelve un string base64 en formato JPEG al 80% de calidad.
+ * @param file - Archivo de imagen seleccionado por el usuario
+ * @returns String base64 de la imagen redimensionada
+ */
 function resizeImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -63,6 +73,12 @@ function resizeImage(file: File): Promise<string> {
   });
 }
 
+/**
+ * @description Formulario de edición de perfil del jugador.
+ * Permite cambiar foto (base64), deportes, nivel por deporte, zona,
+ * disponibilidad semanal y bio. Guarda vía server action updateProfile.
+ * @param initialData - Datos actuales del perfil para precargar los campos
+ */
 export function EditProfileForm({
   initialData,
 }: {
@@ -92,6 +108,7 @@ export function EditProfileForm({
   const [availability, setAvailability] = useState<Record<string, boolean>>(initialData.availability);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  /** @description Agrega o quita un deporte de la selección */
   const toggleSport = (sport: SportKey) => {
     const next = new Set(selectedSports);
     if (next.has(sport)) next.delete(sport);
@@ -99,6 +116,7 @@ export function EditProfileForm({
     setSelectedSports(next);
   };
 
+  /** @description Procesa la imagen seleccionada: valida tamaño y redimensiona a 200x200 */
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,6 +128,7 @@ export function EditProfileForm({
     } catch { setError("Error al procesar la imagen"); }
   };
 
+  /** @description Valida los campos y guarda el perfil actualizado vía server action */
   const handleSubmit = async () => {
     setError("");
     if (selectedSports.size === 0) { setError("Elegí al menos un deporte."); return; }
@@ -130,6 +149,7 @@ export function EditProfileForm({
     }
   };
 
+  /** @description Renderiza una etiqueta de campo del formulario */
   const fieldLabel = (t: string) => (
     <label className="text-xs font-semibold mb-2 block" style={{ color: B.faint }}>{t}</label>
   );
@@ -137,6 +157,7 @@ export function EditProfileForm({
   const inputStyle = { background: B.card, border: `1px solid ${B.line}`, color: B.text };
   const inputClass = "w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[#B6F23B] placeholder:text-[rgba(255,255,255,0.3)]";
 
+  /* Generar color e iniciales para el avatar por defecto */
   const palette = ["#5B9BFF","#E9885B","#7FD17F","#C77DFF","#F2A93B","#5BD0C8","#FF8BA0"];
   let h = 0;
   for (let i = 0; i < initialData.name.length; i++) h = (h * 31 + initialData.name.charCodeAt(i)) % palette.length;
@@ -154,7 +175,7 @@ export function EditProfileForm({
         </h1>
 
         <div className="space-y-6">
-          {/* Photo */}
+          {/* Foto de perfil con overlay de cámara al hover */}
           <div className="flex flex-col items-center gap-3">
             <button
               type="button"
@@ -181,7 +202,7 @@ export function EditProfileForm({
             </button>
           </div>
 
-          {/* Sports */}
+          {/* Selector de deportes */}
           <div>
             {fieldLabel("Deportes")}
             <div className="grid grid-cols-3 gap-2.5">
@@ -203,7 +224,7 @@ export function EditProfileForm({
             </div>
           </div>
 
-          {/* Levels */}
+          {/* Nivel por deporte con selector segmentado */}
           {selectedSports.size > 0 && (
             <div>
               {fieldLabel("Nivel por deporte")}
@@ -236,7 +257,7 @@ export function EditProfileForm({
             </div>
           )}
 
-          {/* Zone */}
+          {/* Zona de juego */}
           <div>
             {fieldLabel("Zona de juego")}
             <input
@@ -248,7 +269,7 @@ export function EditProfileForm({
             />
           </div>
 
-          {/* Availability */}
+          {/* Disponibilidad semanal con chips toggle */}
           <div>
             {fieldLabel("Disponibilidad")}
             <div className="flex flex-wrap gap-2">
@@ -273,7 +294,7 @@ export function EditProfileForm({
             </div>
           </div>
 
-          {/* Bio */}
+          {/* Bio corta opcional con contador de caracteres */}
           <div>
             {fieldLabel("Bio corta (opcional)")}
             <textarea

@@ -3,6 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+/**
+ * @description Obtiene los mensajes del chat de un partido.
+ * Valida que el usuario esté autenticado y sea participante confirmado.
+ * Soporta paginación por cursor (últimos 50 mensajes por página).
+ * @param request - Objeto de request con query param opcional `cursor`
+ * @param params - Parámetros de la ruta con el ID del partido
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -17,7 +24,7 @@ export async function GET(
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  // Verify user is participant
+  /* Verificar que el usuario sea participante confirmado del partido */
   const participation = await prisma.participation.findUnique({
     where: {
       matchId_userId: {

@@ -1,13 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton-loader";
 
+/** @description Skeleton de carga para la página de administración */
 export default function AdminLoading() {
   return (
     <div className="flex min-h-screen flex-col" style={{ background: "#0B0D08" }}>
       <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 space-y-8">
-        {/* Title */}
+        {/* Título */}
         <Skeleton className="h-9 w-48" />
 
-        {/* Stats grid */}
+        {/* Grilla de estadísticas */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Skeleton className="h-24 rounded-xl" />
           <Skeleton className="h-24 rounded-xl" />
@@ -15,7 +16,7 @@ export default function AdminLoading() {
           <Skeleton className="h-24 rounded-xl" />
         </div>
 
-        {/* Recent users */}
+        {/* Usuarios recientes */}
         <div className="space-y-3">
           <Skeleton className="h-6 w-40" />
           {[1, 2, 3].map((i) => (
@@ -23,7 +24,7 @@ export default function AdminLoading() {
           ))}
         </div>
 
-        {/* Recent matches */}
+        {/* Partidos recientes */}
         <div className="space-y-3">
           <Skeleton className="h-6 w-44" />
           {[1, 2, 3].map((i) => (

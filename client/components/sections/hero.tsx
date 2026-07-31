@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Trophy, Users } from "lucide-react";
 
+/** @description Paleta de colores para la sección hero */
 const B = { ink: "#0B0D08", lime: "#B6F23B", paper: "#FAFAF6" };
 
+/**
+ * @description Sección hero de la landing page.
+ * Incluye badge de deportes, título principal, subtítulo,
+ * botones de acción (CTA) y estadísticas de la plataforma.
+ */
 export function Hero() {
   return (
     <section
@@ -13,7 +19,7 @@ export function Hero() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-          {/* Badge */}
+          {/* Badge de deportes */}
           <div
             className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm"
             style={{
@@ -25,7 +31,7 @@ export function Hero() {
             🎾 Tenis · Pádel · Fútbol
           </div>
 
-          {/* Título */}
+          {/* Título principal */}
           <h1
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
             style={{
@@ -46,7 +52,7 @@ export function Hero() {
             Sumate a partidos abiertos o creá los tuyos en menos de un minuto.
           </p>
 
-          {/* CTAs */}
+          {/* Botones de acción */}
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
             <Link
               href="/registro"
@@ -68,7 +74,7 @@ export function Hero() {
             </Link>
           </div>
 
-          {/* Stats */}
+          {/* Estadísticas de la plataforma */}
           <div
             className="mt-16 grid grid-cols-3 gap-8 sm:gap-12 pt-8 w-full max-w-2xl"
             style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}

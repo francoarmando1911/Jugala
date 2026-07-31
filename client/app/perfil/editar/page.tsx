@@ -4,6 +4,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { EditProfileForm } from "./edit-form";
 
+/**
+ * @description Página de edición de perfil.
+ * Obtiene los datos actuales del usuario y los pasa al formulario de edición.
+ * Redirige a login si no hay sesión activa.
+ */
 export default async function EditarPerfilPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
@@ -15,6 +20,7 @@ export default async function EditarPerfilPage() {
 
   if (!user) redirect("/login");
 
+  /* Parsear disponibilidad semanal del perfil */
   const availability = user.availability
     ? (JSON.parse(user.availability) as Record<string, boolean>)
     : {};

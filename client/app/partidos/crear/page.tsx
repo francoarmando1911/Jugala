@@ -8,33 +8,43 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SportGlyph } from "@/components/sport-icon";
 
+/** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
   line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
   text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
 };
 
+/** @description Deportes disponibles para seleccionar */
 const SPORTS = [
   { value: "TENNIS" as const, label: "Tenis" },
   { value: "PADEL" as const, label: "Pádel" },
   { value: "FOOTBALL" as const, label: "Fútbol" },
 ];
 
+/** @description Opciones de cantidad de jugadores según el deporte */
 const PLAYER_OPTIONS: Record<string, number[]> = {
   TENNIS: [2, 4], PADEL: [4], FOOTBALL: [6, 8, 10, 12, 14],
 };
 
+/**
+ * @description Página para crear un nuevo partido.
+ * Formulario con selector de deporte, título, descripción, fecha/hora,
+ * ubicación y control de cupos según el deporte seleccionado.
+ */
 export default function CrearPartidoPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [sport, setSport] = useState<"TENNIS" | "PADEL" | "FOOTBALL">("PADEL");
   const [maxPlayers, setMaxPlayers] = useState(4);
 
+  /** @description Cambia el deporte y resetea los cupos al valor por defecto del deporte */
   const handleSportChange = (value: "TENNIS" | "PADEL" | "FOOTBALL") => {
     setSport(value);
     setMaxPlayers(PLAYER_OPTIONS[value][0]);
   };
 
+  /** @description Envía el formulario para crear el partido vía server action */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -54,6 +64,7 @@ export default function CrearPartidoPage() {
 
   const today = new Date().toISOString().split("T")[0];
 
+  /** @description Renderiza una etiqueta de campo del formulario */
   const fieldLabel = (t: string) => (
     <label className="text-xs font-semibold mb-2 block" style={{ color: B.faint }}>{t}</label>
   );
@@ -83,7 +94,7 @@ export default function CrearPartidoPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Sport selector */}
+          {/* Selector de deporte */}
           <div>
             {fieldLabel("Deporte")}
             <div className="grid grid-cols-3 gap-2.5">
@@ -122,6 +133,7 @@ export default function CrearPartidoPage() {
               className={`${inputClass} resize-none`} style={inputStyle} />
           </div>
 
+          {/* Fecha y hora con min-w-0 para evitar overflow en mobile */}
           <div className="grid grid-cols-2 gap-3">
             <div className="min-w-0">
               {fieldLabel("Fecha")}
@@ -141,7 +153,7 @@ export default function CrearPartidoPage() {
               className={inputClass} style={inputStyle} />
           </div>
 
-          {/* Cupos */}
+          {/* Control de cupos con incremento/decremento */}
           <div>
             {fieldLabel("Cupos")}
             <div className="flex items-center justify-between rounded-[13px] px-3 py-2"

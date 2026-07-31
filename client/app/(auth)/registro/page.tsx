@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+/** @description Ícono SVG del logo de Google para los botones de OAuth */
 function GoogleIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24">
@@ -20,12 +21,17 @@ function GoogleIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
+/**
+ * @description Página de registro con soporte para email/contraseña y Google OAuth.
+ * Redirige al dashboard tras el registro exitoso.
+ */
 export default function RegistroPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  /** @description Maneja el envío del formulario de registro con email, nombre y contraseña */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -51,6 +57,7 @@ export default function RegistroPage() {
     router.push("/dashboard");
   };
 
+  /** @description Inicia el flujo de registro con Google OAuth */
   const handleGoogleSignUp = async () => {
     setError("");
     setGoogleLoading(true);
@@ -71,6 +78,7 @@ export default function RegistroPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+            {/* Botón de registro con Google */}
             <Button
               variant="outline"
               className="w-full"
@@ -81,6 +89,7 @@ export default function RegistroPage() {
               {googleLoading ? "Redirigiendo..." : "Registrarte con Google"}
             </Button>
 
+            {/* Separador visual */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -90,6 +99,7 @@ export default function RegistroPage() {
               </div>
             </div>
 
+            {/* Formulario de registro con email */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Nombre</Label>

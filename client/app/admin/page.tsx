@@ -4,6 +4,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * @description Panel de administración con métricas generales de la plataforma.
+ * Solo accesible para usuarios con rol ADMIN.
+ * Muestra estadísticas, deportes populares, usuarios y partidos recientes.
+ */
 export default async function AdminPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -13,7 +18,7 @@ export default async function AdminPage() {
     redirect("/login");
   }
 
-  // Verificar que sea admin
+  /* Verificar que el usuario tenga rol de administrador */
   const currentUser = await prisma.user.findUnique({
     where: { id: session.user.id },
   });
@@ -22,7 +27,7 @@ export default async function AdminPage() {
     redirect("/dashboard");
   }
 
-  // Stats generales
+  /* Obtener estadísticas generales de la plataforma */
   const [
     totalUsers,
     usersOnboarded,
@@ -41,7 +46,7 @@ export default async function AdminPage() {
     prisma.participation.count({ where: { status: "CONFIRMED" } }),
   ]);
 
-  // Usuarios recientes
+  /* Obtener los 10 usuarios más recientes */
   const recentUsers = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
     take: 10,
@@ -57,7 +62,7 @@ export default async function AdminPage() {
     },
   });
 
-  // Partidos recientes
+  /* Obtener los 10 partidos más recientes */
   const recentMatches = await prisma.match.findMany({
     orderBy: { createdAt: "desc" },
     take: 10,
@@ -67,19 +72,21 @@ export default async function AdminPage() {
     },
   });
 
-  // Deportes más jugados
+  /* Conteo de jugadores por deporte, ordenado por popularidad */
   const sportCounts = await prisma.profile.groupBy({
     by: ["sport"],
     _count: { sport: true },
     orderBy: { _count: { sport: "desc" } },
   });
 
+  /** @description Mapeo de códigos de deporte a etiquetas con emoji */
   const sportLabels: Record<string, string> = {
     TENNIS: "🎾 Tenis",
     PADEL: "🏓 Pádel",
     FOOTBALL: "⚽ Fútbol",
   };
 
+  /** @description Colores por estado del partido */
   const statusColors: Record<string, string> = {
     OPEN: "text-green-500",
     FULL: "text-yellow-500",
@@ -95,7 +102,7 @@ export default async function AdminPage() {
           <p className="text-muted-foreground">Métricas generales de Jugala</p>
         </div>
 
-        {/* Stats principales */}
+        {/* Estadísticas principales */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
           <Card>
             <CardContent className="pt-6 text-center">
@@ -141,7 +148,7 @@ export default async function AdminPage() {
           </Card>
         </div>
 
-        {/* Deportes populares */}
+        {/* Deportes más populares */}
         {sportCounts.length > 0 && (
           <Card>
             <CardHeader>
@@ -163,7 +170,7 @@ export default async function AdminPage() {
         )}
 
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* Usuarios recientes */}
+          {/* Últimos usuarios registrados */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Últimos usuarios</CardTitle>
@@ -212,7 +219,7 @@ export default async function AdminPage() {
             </CardContent>
           </Card>
 
-          {/* Partidos recientes */}
+          {/* Últimos partidos creados */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Últimos partidos</CardTitle>

@@ -5,6 +5,7 @@ import { joinMatch, leaveMatch, deleteMatch } from "@/app/actions/match";
 import { Button } from "@/components/ui/button";
 import { Share2, Check } from "lucide-react";
 
+/** @description Props del componente de acciones de un partido */
 type Props = {
   matchId: string;
   matchTitle: string;
@@ -17,6 +18,11 @@ type Props = {
   spotsLeft: number;
 };
 
+/**
+ * @description Componente de acciones para un partido.
+ * Muestra botones para unirse, salir, compartir (WhatsApp, copiar link, nativo) y eliminar.
+ * La visibilidad de cada acción depende del rol del usuario y el estado del partido.
+ */
 export function MatchActions({
   matchId,
   matchTitle,
@@ -32,6 +38,7 @@ export function MatchActions({
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
+  /** @description Unirse al partido como participante confirmado */
   const handleJoin = async () => {
     setError("");
     setLoading(true);
@@ -42,6 +49,7 @@ export function MatchActions({
     setLoading(false);
   };
 
+  /** @description Abandonar el partido (no disponible para el organizador) */
   const handleLeave = async () => {
     setError("");
     setLoading(true);
@@ -58,13 +66,14 @@ export function MatchActions({
 
   const shareText = `⚡ Unite a este partido en Jugala!\n\n${matchSport} — ${matchTitle}\n📅 ${matchDate}\n📍 ${matchLocation}\n\n${matchUrl}`;
 
+  /** @description Copia el link del partido al portapapeles con fallback para móvil */
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(matchUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback para móvil
+      /* Fallback para navegadores que no soportan clipboard API */
       const input = document.createElement("input");
       input.value = matchUrl;
       document.body.appendChild(input);
@@ -76,11 +85,13 @@ export function MatchActions({
     }
   };
 
+  /** @description Abre WhatsApp con el texto de invitación al partido */
   const handleShareWhatsApp = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
     window.open(url, "_blank");
   };
 
+  /** @description Usa la API nativa de compartir del dispositivo (mobile) */
   const handleNativeShare = async () => {
     if (navigator.share) {
       try {
@@ -90,7 +101,7 @@ export function MatchActions({
           url: matchUrl,
         });
       } catch {
-        // User cancelled
+        /* El usuario canceló la acción de compartir */
       }
     }
   };
@@ -101,12 +112,14 @@ export function MatchActions({
         <p className="text-sm text-red-500 text-center">{error}</p>
       )}
 
+      {/* Botón de unirse al partido */}
       {status === "OPEN" && !isParticipant && spotsLeft > 0 && (
         <Button onClick={handleJoin} className="w-full" disabled={loading}>
           {loading ? "Uniéndose..." : "Unirme al partido"}
         </Button>
       )}
 
+      {/* Botón de salir del partido */}
       {isParticipant && !isOrganizer && status !== "PLAYED" && (
         <Button
           onClick={handleLeave}
@@ -118,7 +131,7 @@ export function MatchActions({
         </Button>
       )}
 
-      {/* Compartir */}
+      {/* Opciones de compartir */}
       <div className="flex gap-2">
         <Button
           onClick={handleShareWhatsApp}
@@ -149,7 +162,7 @@ export function MatchActions({
         </Button>
       </div>
 
-      {/* Share nativo (mobile) */}
+      {/* Compartir vía API nativa del dispositivo */}
       {typeof navigator !== "undefined" && "share" in navigator && (
         <Button
           onClick={handleNativeShare}
@@ -160,6 +173,7 @@ export function MatchActions({
         </Button>
       )}
 
+      {/* Acciones del organizador */}
       {isOrganizer && (
         <>
           <p className="text-center text-xs text-muted-foreground">
@@ -181,6 +195,7 @@ export function MatchActions({
         </>
       )}
 
+      {/* Aviso de partido completo */}
       {status === "FULL" && !isParticipant && (
         <p className="text-center text-sm text-yellow-500">
           Este partido está completo.

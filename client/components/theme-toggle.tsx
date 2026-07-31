@@ -12,6 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * @description Toggle de tema con dropdown para elegir entre claro, oscuro o sistema.
+ * Muestra ícono de sol/luna con animación de rotación según el tema activo.
+ */
 export function ThemeToggle() {
   const { setTheme } = useTheme();
 
