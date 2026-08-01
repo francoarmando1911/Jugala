@@ -126,13 +126,14 @@ export default async function DashboardPage() {
         {/* Estadísticas del jugador */}
         <div className="grid grid-cols-3 gap-2.5 mb-7">
           {[
-            { n: myUpcoming.length, label: "Próximos", color: B.lime },
-            { n: totalPlayed, label: "Jugados", color: B.blue },
-            { n: totalOrganized, label: "Organizados", color: B.orange },
-          ].map(({ n, label, color }) => (
-            <div
+            { n: myUpcoming.length, label: "Próximos", color: B.lime, tab: "proximos" },
+            { n: totalPlayed, label: "Jugados", color: B.blue, tab: "jugados" },
+            { n: totalOrganized, label: "Organizados", color: B.orange, tab: "organizados" },
+          ].map(({ n, label, color, tab }) => (
+            <Link
               key={label}
-              className="rounded-2xl p-3.5"
+              href={`/partidos/historial?tab=${tab}`}
+              className="rounded-2xl p-3.5 transition-all hover:brightness-110"
               style={{ background: B.card, border: `1px solid ${B.line2}` }}
             >
               <div
@@ -144,7 +145,7 @@ export default async function DashboardPage() {
               <div className="text-[11.5px] mt-1.5" style={{ color: B.faint }}>
                 {label}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
