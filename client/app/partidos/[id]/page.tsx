@@ -142,10 +142,10 @@ export default async function PartidoPage({
                     >
                       <Avatar name={participant.user.name || "U"} size={36} />
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold truncate" style={{ color: B.text }}>
+                        <Link href={`/jugador/${participant.user.id}`} className="text-sm font-semibold truncate hover:underline" style={{ color: B.text }}>
                           {participant.user.name}
                           {isYou && <span style={{ color: B.lime }}> (vos)</span>}
-                        </p>
+                        </Link>
                         {participant.userId === match.organizerId && (
                           <p className="text-[11px]" style={{ color: B.lime }}>Organizador</p>
                         )}
