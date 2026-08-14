@@ -23,5 +23,8 @@
     "build": "npm run build --workspace=client",
     "start": "npm run start --workspace=client",
     "lint": "npm run lint --workspace=client"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
   }
 }
