@@ -41,11 +41,11 @@ export function BottomNav() {
 
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
-        style={{ paddingBottom: "20px" }}
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         {/* Contenedor con efecto liquid glass */}
         <div
-          className="mx-3 mb-10 rounded-2xl border border-white/[0.08]"
+          className="mx-0 rounded-none border-t border-white/[0.08]"
           style={{
             background: "linear-gradient(135deg, rgba(24,27,17,0.82) 0%, rgba(11,13,8,0.92) 100%)",
             backdropFilter: "blur(40px) saturate(1.8)",
