@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Hero } from "@/components/sections/hero";
@@ -14,9 +15,15 @@ export default async function HomePage() {
     redirect("/dashboard");
   }
 
+  /* Conteos reales de la plataforma para las estadísticas del hero */
+  const [playerCount, matchCount] = await Promise.all([
+    prisma.user.count(),
+    prisma.match.count(),
+  ]);
+
   return (
     <main>
-      <Hero />
+      <Hero playerCount={playerCount} matchCount={matchCount} />
       <Features />
       <AddToHome />
     </main>

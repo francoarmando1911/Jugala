@@ -6,9 +6,7 @@ import {
   Target,
   Zap,
 } from "lucide-react";
-
-/** @description Paleta de colores para la sección de features */
-const B = { ink: "#0B0D08", card: "#121410", lime: "#B6F23B", paper: "#FAFAF6" };
+import { B } from "@/lib/design-tokens";
 
 /** @description Lista de features de la plataforma con ícono, título y descripción */
 const features = [
@@ -58,7 +56,7 @@ export function Features() {
   return (
     <section
       className="py-20 sm:py-28"
-      style={{ background: B.ink }}
+      style={{ background: B.bg }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Encabezado de la sección */}
@@ -67,7 +65,7 @@ export function Features() {
             className="text-3xl sm:text-4xl font-extrabold tracking-tight"
             style={{
               fontFamily: "var(--font-archivo), Archivo, sans-serif",
-              color: B.paper,
+              color: B.text,
             }}
           >
             Todo lo que necesitás para{" "}
@@ -75,7 +73,7 @@ export function Features() {
           </h2>
           <p
             className="mt-4 text-lg"
-            style={{ color: "rgba(255,255,255,0.5)" }}
+            style={{ color: B.dim }}
           >
             Diseñado por jugadores para jugadores. Sin features de relleno.
           </p>
@@ -89,27 +87,29 @@ export function Features() {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
               style={{
                 background: B.card,
-                border: "1px solid rgba(255,255,255,0.06)",
+                border: `1px solid color-mix(in srgb, ${B.text} 10%, transparent)`,
+                boxShadow: `0 1px 0 color-mix(in srgb, ${B.text} 4%, transparent)`,
               }}
             >
               <div
                 className="flex h-12 w-12 items-center justify-center rounded-xl mb-4 transition-colors"
                 style={{
-                  background: "rgba(182,242,59,0.1)",
+                  background: B.limeDim,
                   color: B.lime,
+                  border: `1px solid color-mix(in srgb, ${B.lime} 28%, transparent)`,
                 }}
               >
                 <feature.icon className="h-6 w-6" />
               </div>
               <h3
                 className="font-semibold text-lg mb-2"
-                style={{ color: B.paper }}
+                style={{ color: B.text }}
               >
                 {feature.title}
               </h3>
               <p
                 className="text-sm leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.5)" }}
+                style={{ color: B.dim }}
               >
                 {feature.description}
               </p>
