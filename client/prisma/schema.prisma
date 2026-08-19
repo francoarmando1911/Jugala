@@ -35,6 +35,7 @@ model User {
   organizedMatches Match[]        @relation("OrganizedMatches")
   participations   Participation[]
   messages         Message[]
+  notifications    Notification[]
 
   @@map("users")
 }
@@ -138,6 +139,7 @@ model Match {
 
   participants Participation[]
   messages      Message[]
+  notifications Notification[]
 
   @@index([sport, status, date])
   @@index([organizerId])
@@ -175,6 +177,33 @@ enum Role {
   USER
   ADMIN
 }
+// =====================================================================
+// NOTIFICACIONES IN-APP
+// =====================================================================
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  matchId   String?
+  match     Match?           @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  // Evita generar la misma notificación dos veces para el mismo partido/usuario
+  @@unique([userId, matchId, type])
+  @@index([userId, read, createdAt])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  MATCH_UPCOMING
+  MATCH_STARTING_SOON
+  MATCH_CANCELLED
+}
+
 // =====================================================================
 // MENSAJES (Chat por partido)
 // =====================================================================
