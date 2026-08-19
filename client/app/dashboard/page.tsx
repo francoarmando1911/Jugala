@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Plus, Search, CalendarDays, MapPin } from "lucide-react";
 import { SportBadge } from "@/components/sport-badge";
 import { SportTile, LevelPill, Avatar, AvatarStack } from "@/components/sport-icon";
+import { formatMatchLocationShort } from "@/lib/argentina-provincias";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -208,7 +209,7 @@ export default async function DashboardPage() {
                             {match.title}
                           </p>
                           <p className="text-xs mt-0.5" style={{ color: B.dim }}>
-                            {dateStr} {timeStr} · {match.location}
+                            {dateStr} {timeStr} · {formatMatchLocationShort(match)}
                           </p>
                         </div>
                         <LevelPill level="INTERMEDIATE" sport={match.sport} />

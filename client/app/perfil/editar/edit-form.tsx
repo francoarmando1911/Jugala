@@ -6,7 +6,7 @@ import { ChevronLeft, Camera } from "lucide-react";
 import { updateProfile } from "@/app/actions/profile";
 import { SportGlyph } from "@/components/sport-icon";
 import { LocationSelect, type LocationValue } from "@/components/location-select";
-import { PROVINCIAS_AR } from "@/lib/argentina-provincias";
+import { parseZoneText } from "@/lib/argentina-provincias";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -98,12 +98,8 @@ export function EditProfileForm({
   const [bio, setBio] = useState(initialData.bio);
   const [location, setLocation] = useState<LocationValue>(() => {
     /* Intentar reconstruir provincia/localidad a partir del texto libre guardado previamente */
-    const parts = initialData.zone.split(",").map((p) => p.trim());
-    if (parts.length === 2) {
-      const provincia = PROVINCIAS_AR.find((p) => p.nombre.toLowerCase() === parts[1].toLowerCase());
-      if (provincia) return { provinciaId: provincia.id, provinciaNombre: provincia.nombre, localidad: parts[0] };
-    }
-    return { provinciaId: "", provinciaNombre: "", localidad: "" };
+    const parsed = parseZoneText(initialData.zone);
+    return parsed ?? { provinciaId: "", provinciaNombre: "", localidad: "" };
   });
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.image);
   const [imageData, setImageData] = useState<string | null>(null);
