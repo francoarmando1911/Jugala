@@ -87,7 +87,8 @@ export function Features() {
               className="group relative rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
               style={{
                 background: B.card,
-                border: `1px solid ${B.line2}`,
+                border: `1px solid color-mix(in srgb, ${B.text} 10%, transparent)`,
+                boxShadow: `0 1px 0 color-mix(in srgb, ${B.text} 4%, transparent)`,
               }}
             >
               <div
@@ -95,6 +96,7 @@ export function Features() {
                 style={{
                   background: B.limeDim,
                   color: B.lime,
+                  border: `1px solid color-mix(in srgb, ${B.lime} 28%, transparent)`,
                 }}
               >
                 <feature.icon className="h-6 w-6" />

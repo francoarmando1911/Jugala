@@ -36,8 +36,8 @@ export function Hero({ playerCount, matchCount }: { playerCount: number; matchCo
           <div
             className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm"
             style={{
-              background: `color-mix(in srgb, ${B.text} 6%, transparent)`,
-              border: `1px solid ${B.line}`,
+              background: `color-mix(in srgb, ${B.text} 8%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${B.text} 14%, transparent)`,
               color: B.dim,
             }}
           >
@@ -79,7 +79,7 @@ export function Hero({ playerCount, matchCount }: { playerCount: number; matchCo
               href="/partidos"
               className="inline-flex items-center rounded-full px-7 py-3 text-base font-semibold transition-colors hover:bg-white/10"
               style={{
-                border: `1px solid ${B.line}`,
+                border: `1.5px solid color-mix(in srgb, ${B.text} 22%, transparent)`,
                 color: B.text,
               }}
             >
