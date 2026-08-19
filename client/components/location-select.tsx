@@ -117,7 +117,7 @@ export function LocationSelect({
         </select>
       </div>
       {error && (
-        <p className="col-span-2 text-xs" style={{ color: "#FF6B6B" }}>{error}</p>
+        <p className="col-span-2 text-xs" style={{ color: "var(--jg-danger)" }}>{error}</p>
       )}
     </div>
   );

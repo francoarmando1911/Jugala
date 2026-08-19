@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton-loader";
 /** @description Skeleton de carga para la página de administración */
 export default function AdminLoading() {
   return (
-    <div className="flex min-h-screen flex-col" style={{ background: "#0B0D08" }}>
+    <div className="flex min-h-screen flex-col" style={{ background: "var(--jg-bg)" }}>
       <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 space-y-8">
         {/* Título */}
         <Skeleton className="h-9 w-48" />

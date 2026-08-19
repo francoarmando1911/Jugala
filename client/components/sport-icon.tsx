@@ -1,8 +1,8 @@
-/** @description Configuración de deportes con etiqueta y color distintivo */
+/** @description Configuración de deportes con etiqueta y color distintivo (referencia CSS var, theme-aware) */
 const SPORTS: Record<string, { label: string; color: string }> = {
-  TENNIS: { label: "Tenis", color: "#E9D24B" },
-  PADEL: { label: "Pádel", color: "#B6F23B" },
-  FOOTBALL: { label: "Fútbol", color: "#5B9BFF" },
+  TENNIS: { label: "Tenis", color: "var(--jg-sport-tennis)" },
+  PADEL: { label: "Pádel", color: "var(--jg-sport-padel)" },
+  FOOTBALL: { label: "Fútbol", color: "var(--jg-sport-football)" },
 };
 
 /**
@@ -12,7 +12,7 @@ const SPORTS: Record<string, { label: string; color: string }> = {
  * @param color - Color override (por defecto usa el color del deporte)
  */
 export function SportGlyph({ sport, size = 18, color }: { sport: string; size?: number; color?: string }) {
-  const c = color || SPORTS[sport]?.color || "#B6F23B";
+  const c = color || SPORTS[sport]?.color || "var(--jg-sport-padel)";
   if (sport === "TENNIS") return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="9" stroke={c} strokeWidth="1.9"/>
@@ -43,7 +43,7 @@ export function SportGlyph({ sport, size = 18, color }: { sport: string; size?: 
  * @param size - Tamaño del tile en píxeles
  */
 export function SportTile({ sport, size = 46 }: { sport: string; size?: number }) {
-  const c = SPORTS[sport]?.color || "#B6F23B";
+  const c = SPORTS[sport]?.color || "var(--jg-sport-padel)";
   return (
     <div
       className="flex items-center justify-center shrink-0"
@@ -64,7 +64,7 @@ export function SportTile({ sport, size = 46 }: { sport: string; size?: number }
  * @param sport - Código del deporte para el color (opcional)
  */
 export function LevelPill({ level, sport }: { level: string; sport?: string }) {
-  const color = sport ? (SPORTS[sport]?.color || "#B6F23B") : "#B6F23B";
+  const color = sport ? (SPORTS[sport]?.color || "var(--jg-sport-padel)") : "var(--jg-sport-padel)";
   /** @description Mapeo de niveles a etiquetas en español */
   const labels: Record<string, string> = {
     BEGINNER: "Principiante", INTERMEDIATE: "Intermedio",
@@ -140,7 +140,7 @@ export function AvatarStack({ names, size = 26 }: { names: string[]; size?: numb
     <div className="flex">
       {names.map((n, i) => (
         <div key={i} style={{ marginLeft: i ? -(size * 0.32) : 0, zIndex: names.length - i }}>
-          <div style={{ boxShadow: "0 0 0 2.5px #0B0D08", borderRadius: "50%" }}>
+          <div style={{ boxShadow: "0 0 0 2.5px var(--jg-card)", borderRadius: "50%" }}>
             <Avatar name={n} size={size} />
           </div>
         </div>

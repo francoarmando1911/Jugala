@@ -8,21 +8,14 @@ import { SportTile, LevelPill, Avatar } from "@/components/sport-icon";
 import { MatchActions } from "./match-actions";
 import { MatchChat } from "@/components/match-chat";
 import { formatMatchLocation } from "@/lib/argentina-provincias";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-  ghost: "rgba(255,255,255,0.28)",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Mapeo de estados del partido a etiqueta, color y fondo */
 const statusLabels: Record<string, { label: string; color: string; bg: string }> = {
-  OPEN: { label: "Abierto", color: B.lime, bg: "rgba(182,242,59,0.14)" },
-  FULL: { label: "Completo", color: "#E9D24B", bg: "rgba(233,210,75,0.14)" },
-  PLAYED: { label: "Jugado", color: B.faint, bg: "rgba(255,255,255,0.06)" },
-  CANCELLED: { label: "Cancelado", color: "#FF6B6B", bg: "rgba(255,107,107,0.14)" },
+  OPEN: { label: "Abierto", color: B.lime, bg: B.limeDim },
+  FULL: { label: "Completo", color: B.warn, bg: "rgba(233,210,75,0.14)" },
+  PLAYED: { label: "Jugado", color: B.faint, bg: `color-mix(in srgb, ${B.text} 6%, transparent)` },
+  CANCELLED: { label: "Cancelado", color: B.danger, bg: "rgba(255,107,107,0.14)" },
 };
 
 /**

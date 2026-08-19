@@ -7,13 +7,7 @@ import { Search, MapPin } from "lucide-react";
 import { SportTile, LevelPill, AvatarStack } from "@/components/sport-icon";
 import { MatchFilters } from "./match-filters";
 import { formatMatchLocationShort, parseZoneText } from "@/lib/argentina-provincias";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)", text: "#F5F6F1",
-  dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-};
+import { B } from "@/lib/design-tokens";
 
 /**
  * @description Página de listado de partidos con filtros por deporte y localidad.
@@ -110,7 +104,7 @@ export default async function PartidosPage({
             <Link
               href="/partidos/crear"
               className="inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-5 py-2.5"
-              style={{ background: B.lime, color: "#0B0D08" }}
+              style={{ background: B.limeSolid, color: "#0B0D08" }}
             >
               Crear partido
             </Link>
@@ -171,7 +165,7 @@ export default async function PartidosPage({
                         {match.status === "OPEN" && spotsLeft > 0 && !isAlreadyIn && (
                           <span
                             className="text-[13px] font-bold rounded-full px-4 py-2"
-                            style={{ background: B.lime, color: "#0B0D08" }}
+                            style={{ background: B.limeSolid, color: "#0B0D08" }}
                           >
                             Unirme
                           </span>

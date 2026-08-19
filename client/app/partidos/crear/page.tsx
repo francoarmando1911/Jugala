@@ -8,13 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SportGlyph } from "@/components/sport-icon";
 import { LocationSelect, type LocationValue } from "@/components/location-select";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Deportes disponibles para seleccionar */
 const SPORTS = [
@@ -84,7 +78,7 @@ export default function CrearPartidoPage() {
     <label className="text-xs font-semibold mb-2 block" style={{ color: B.faint }}>{t}</label>
   );
 
-  const inputClass = "w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:ring-1 focus:ring-[#B6F23B] placeholder:text-[rgba(255,255,255,0.3)]";
+  const inputClass = "w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:ring-1 focus:ring-[var(--jg-lime)] placeholder:text-[var(--jg-faint)]";
   const inputStyle = { background: B.card, border: `1px solid ${B.line}`, color: B.text };
 
   return (
@@ -205,20 +199,20 @@ export default function CrearPartidoPage() {
                   if (idx < opts.length - 1) setMaxPlayers(opts[idx + 1]);
                 }}
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-lg font-bold"
-                style={{ background: B.lime, color: "#0B0D08" }}
+                style={{ background: B.limeSolid, color: "#0B0D08" }}
               >+</button>
             </div>
           </div>
 
           {error && (
-            <p className="text-sm text-center" style={{ color: "#FF6B6B" }}>{error}</p>
+            <p className="text-sm text-center" style={{ color: B.danger }}>{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-[15px] py-4 text-base font-bold transition-all hover:brightness-110 disabled:opacity-50"
-            style={{ background: B.lime, color: "#0B0D08" }}
+            style={{ background: B.limeSolid, color: "#0B0D08" }}
           >
             {loading ? "Creando..." : "Crear partido"}
           </button>
