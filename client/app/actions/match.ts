@@ -14,6 +14,8 @@ type CreateMatchInput = {
   date: string;
   time: string;
   location: string;
+  provincia: string;
+  localidad: string;
   maxPlayers: number;
 };
 
@@ -44,6 +46,8 @@ export async function createMatch(input: CreateMatchInput) {
       description: input.description || null,
       date: dateTime,
       location: input.location,
+      provincia: input.provincia,
+      localidad: input.localidad,
       maxPlayers: input.maxPlayers,
       organizerId: session.user.id,
       participants: {

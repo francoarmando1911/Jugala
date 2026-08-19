@@ -63,14 +63,15 @@ export default function CrearPartidoPage() {
 
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    const fullLocation = `${venue.trim()} — ${location.localidad}, ${location.provinciaNombre}`;
     const result = await createMatch({
       sport,
       title: fd.get("title") as string,
       description: fd.get("description") as string,
       date: fd.get("date") as string,
       time: fd.get("time") as string,
-      location: fullLocation,
+      location: venue.trim(),
+      provincia: location.provinciaNombre,
+      localidad: location.localidad,
       maxPlayers,
     });
     if (result?.error) { setError(result.error); setLoading(false); }

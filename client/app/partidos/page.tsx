@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Search, MapPin } from "lucide-react";
 import { SportTile, LevelPill, AvatarStack } from "@/components/sport-icon";
 import { MatchFilters } from "./match-filters";
+import { formatMatchLocationShort, parseZoneText } from "@/lib/argentina-provincias";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -15,19 +16,28 @@ const B = {
 };
 
 /**
- * @description Página de listado de partidos con filtros por deporte y ubicación.
+ * @description Página de listado de partidos con filtros por deporte y localidad.
  * Muestra partidos abiertos y completos ordenados por fecha ascendente.
+ * Por defecto filtra por la localidad del perfil del usuario; puede verse
+ * todas las zonas o cambiar a otra localidad desde los filtros.
  * Redirige a login si no hay sesión activa.
  */
 export default async function PartidosPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sport?: string; location?: string }>;
+  searchParams: Promise<{ sport?: string; provincia?: string; localidad?: string; allZones?: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
   const params = await searchParams;
+  const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { zone: true } });
+  const myZone = user?.zone ? parseZoneText(user.zone) : null;
+
+  /* Si no hay filtros explícitos en la URL, usar la zona del perfil como default */
+  const showingAllZones = params.allZones === "1";
+  const activeProvincia = params.provincia ?? (showingAllZones ? undefined : myZone?.provinciaNombre);
+  const activeLocalidad = params.localidad ?? (showingAllZones ? undefined : myZone?.localidad);
 
   /* Construir filtros de búsqueda según los query params */
   const where: Record<string, unknown> = {
@@ -35,9 +45,8 @@ export default async function PartidosPage({
     status: { in: ["OPEN", "FULL"] },
   };
   if (params.sport && params.sport !== "ALL") where.sport = params.sport;
-  if (params.location) {
-    where.location = { contains: params.location, mode: "insensitive" };
-  }
+  if (activeProvincia) where.provincia = activeProvincia;
+  if (activeLocalidad) where.localidad = activeLocalidad;
 
   const matches = await prisma.match.findMany({
     where,
@@ -66,15 +75,18 @@ export default async function PartidosPage({
           <div className="flex items-center gap-1.5 mt-1">
             <MapPin className="h-3.5 w-3.5" style={{ color: B.lime }} />
             <span className="text-[13px]" style={{ color: B.dim }}>
-              Buscá partidos en tu zona
+              {activeLocalidad ? `Mostrando partidos en ${activeLocalidad}` : "Mostrando partidos en todas las zonas"}
             </span>
           </div>
         </div>
 
-        {/* Filtros de deporte y ubicación */}
+        {/* Filtros de deporte y localidad */}
         <MatchFilters
           currentSport={params.sport || "ALL"}
-          currentLocation={params.location || ""}
+          activeLocalidad={activeLocalidad}
+          activeProvincia={activeProvincia}
+          myZone={myZone}
+          showingAllZones={showingAllZones}
         />
 
         {/* Resultados de búsqueda */}
@@ -136,7 +148,7 @@ export default async function PartidosPage({
                             {match.title}
                           </p>
                           <p className="text-xs mt-0.5" style={{ color: B.dim }}>
-                            {dateStr} {timeStr} · {match.location}
+                            {dateStr} {timeStr} · {formatMatchLocationShort(match)}
                           </p>
                         </div>
                         <LevelPill level="INTERMEDIATE" sport={match.sport} />

@@ -7,6 +7,7 @@ import { CalendarDays, Clock, MapPin, ChevronLeft, Users } from "lucide-react";
 import { SportTile, LevelPill, Avatar } from "@/components/sport-icon";
 import { MatchActions } from "./match-actions";
 import { MatchChat } from "@/components/match-chat";
+import { formatMatchLocation } from "@/lib/argentina-provincias";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -109,7 +110,7 @@ export default async function PartidoPage({
             {[
               { icon: CalendarDays, text: dateFormatted, iconColor: B.lime },
               { icon: Clock, text: timeFormatted, iconColor: B.lime },
-              { icon: MapPin, text: match.location, iconColor: B.lime },
+              { icon: MapPin, text: formatMatchLocation(match), iconColor: B.lime },
               { icon: Users, text: `${match.participants.length}/${match.maxPlayers} jugadores${spotsLeft > 0 && match.status === "OPEN" ? ` · faltan ${spotsLeft}` : ""}`, iconColor: B.lime },
             ].map(({ icon: Icon, text, iconColor }, i) => (
               <div key={i} className="flex items-center gap-3 text-sm" style={{ color: B.text }}>
@@ -181,7 +182,7 @@ export default async function PartidoPage({
               matchTitle={match.title}
               matchSport={{ TENNIS: "🎾 Tenis", PADEL: "🏓 Pádel", FOOTBALL: "⚽ Fútbol" }[match.sport] ?? match.sport}
               matchDate={dateFormatted}
-              matchLocation={match.location}
+              matchLocation={formatMatchLocation(match)}
               isOrganizer={isOrganizer}
               isParticipant={isParticipant}
               status={match.status}

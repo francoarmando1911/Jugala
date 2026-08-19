@@ -127,6 +127,8 @@ model Match {
   description String?
   date        DateTime
   location    String
+  provincia   String?
+  localidad   String?
   maxPlayers  Int
   status      MatchStatus   @default(OPEN)
   organizerId String
@@ -139,6 +141,7 @@ model Match {
 
   @@index([sport, status, date])
   @@index([organizerId])
+  @@index([provincia, localidad])
   @@map("matches")
 }
 

@@ -29,3 +29,37 @@ export const PROVINCIAS_AR = [
   { id: "94", nombre: "Tierra del Fuego, Antártida e Islas del Atlántico Sur" },
   { id: "90", nombre: "Tucumán" },
 ] as const;
+
+/**
+ * @description Compone el texto de ubicación completo de un partido a partir
+ * del lugar (cancha/dirección) y la localidad/provincia estructuradas.
+ * Los partidos creados antes de la migración no tienen localidad/provincia:
+ * en ese caso se muestra solo el texto libre guardado en `location`.
+ */
+export function formatMatchLocation(match: { location: string; localidad?: string | null; provincia?: string | null }): string {
+  if (match.localidad && match.provincia) {
+    return `${match.location} — ${match.localidad}, ${match.provincia}`;
+  }
+  return match.location;
+}
+
+/**
+ * @description Versión corta de la ubicación de un partido para listados
+ * compactos: prioriza la localidad estructurada por sobre el texto libre.
+ */
+export function formatMatchLocationShort(match: { location: string; localidad?: string | null }): string {
+  return match.localidad || match.location;
+}
+
+/**
+ * @description Intenta extraer provincia y localidad de un texto libre con
+ * formato "Localidad, Provincia" (usado antes de tener columnas estructuradas
+ * para la zona del usuario). Devuelve null si no matchea ninguna provincia conocida.
+ */
+export function parseZoneText(zone: string): { provinciaId: string; provinciaNombre: string; localidad: string } | null {
+  const parts = zone.split(",").map((p) => p.trim());
+  if (parts.length !== 2) return null;
+  const provincia = PROVINCIAS_AR.find((p) => p.nombre.toLowerCase() === parts[1].toLowerCase());
+  if (!provincia) return null;
+  return { provinciaId: provincia.id, provinciaNombre: provincia.nombre, localidad: parts[0] };
+}
