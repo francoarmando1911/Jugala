@@ -41,7 +41,7 @@ export function Hero({ playerCount, matchCount }: { playerCount: number; matchCo
               color: B.dim,
             }}
           >
-            🎾 Tenis · Pádel · Fútbol
+            🎾 Tenis · 🏓 Pádel · ⚽ Fútbol
           </div>
 
           {/* Título principal */}
