@@ -7,6 +7,7 @@ import { Menu, X, LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificationBell } from "@/components/notification-bell";
 import { authClient } from "@/lib/auth-client";
 
 /** @description Links visibles para usuarios no autenticados */
@@ -153,6 +154,7 @@ export function Navbar() {
 
         {/* Acciones del lado derecho */}
         <div className="flex items-center gap-2">
+          {session && <NotificationBell userId={session.user.id} />}
           <ThemeToggle />
 
           {!isPending && (
