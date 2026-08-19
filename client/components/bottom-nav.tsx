@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Search, Plus, MessageCircle, User } from "lucide-react";
@@ -25,8 +26,17 @@ export function BottomNav() {
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
 
-  /* Esperar a que la sesión se resuelva para evitar errores de hidratación */
-  if (isPending || !session) return null;
+  /* Recién renderizar contenido dependiente de sesión después de montar en el cliente.
+     El estado de sesión puede resolver distinto entre el render del servidor y el
+     primer render del cliente (ej. sesión ya cacheada), lo que rompe la hidratación
+     si el chequeo de sesión decide el árbol desde el primer render. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- patrón estándar de detección de montaje para evitar mismatch de hidratación
+    setMounted(true);
+  }, []);
+
+  if (!mounted || isPending || !session) return null;
 
   /** @description Determina si una ruta está activa según el pathname actual */
   const isActive = (href: string) => {
