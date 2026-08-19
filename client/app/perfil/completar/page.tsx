@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveProfile } from "@/app/actions/profile";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { LocationSelect, type LocationValue } from "@/components/location-select";
 
 /** @description Deportes disponibles con emoji y etiqueta */
 const SPORTS = [
@@ -63,7 +63,7 @@ export default function CompletarPerfilPage() {
   const [error, setError] = useState("");
 
   const [bio, setBio] = useState("");
-  const [zone, setZone] = useState("");
+  const [location, setLocation] = useState<LocationValue>({ provinciaId: "", provinciaNombre: "", localidad: "" });
   const [selectedSports, setSelectedSports] = useState<Set<SportKey>>(new Set());
   const [levels, setLevels] = useState<Record<SportKey, LevelKey>>({
     TENNIS: "INTERMEDIATE",
@@ -92,7 +92,7 @@ export default function CompletarPerfilPage() {
       return;
     }
 
-    if (!zone.trim()) {
+    if (!location.provinciaId || !location.localidad) {
       setError("Indicá tu zona de juego.");
       return;
     }
@@ -102,7 +102,7 @@ export default function CompletarPerfilPage() {
     try {
       await saveProfile({
         bio,
-        zone,
+        zone: `${location.localidad}, ${location.provinciaNombre}`,
         sports: Array.from(selectedSports).map((sport) => ({
           sport,
           level: levels[sport],
@@ -201,17 +201,16 @@ export default function CompletarPerfilPage() {
 
           {/* Zona de juego */}
           <div className="space-y-2">
-            <Label htmlFor="zone" className="text-base font-semibold">
+            <Label className="text-base font-semibold">
               Zona de juego
             </Label>
-            <Input
-              id="zone"
-              placeholder="Ej: Palermo, Concepción del Uruguay, Zona Norte..."
-              value={zone}
-              onChange={(e) => setZone(e.target.value)}
+            <LocationSelect
+              value={location}
+              onChange={setLocation}
+              inputClass="h-9 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
             />
             <p className="text-xs text-muted-foreground">
-              El barrio o zona donde preferís jugar.
+              Provincia y localidad donde preferís jugar.
             </p>
           </div>
 
