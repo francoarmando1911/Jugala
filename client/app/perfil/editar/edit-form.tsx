@@ -224,23 +224,23 @@ export function EditProfileForm({
             </div>
           </div>
 
-          {/* Nivel por deporte con selector segmentado */}
+          {/* Nivel por deporte con selector segmentado en grilla 2x2 */}
           {selectedSports.size > 0 && (
             <div>
               {fieldLabel("Nivel por deporte")}
-              <div className="space-y-2.5">
+              <div className="space-y-3.5">
                 {Array.from(selectedSports).map((sportKey) => {
                   const sport = SPORTS.find((s) => s.value === sportKey)!;
                   return (
-                    <div key={sportKey} className="flex items-center gap-3">
-                      <span className="text-sm w-20 shrink-0" style={{ color: B.dim }}>{sport.label}</span>
-                      <div className="flex flex-1 rounded-xl p-1" style={{ background: B.card, border: `1px solid ${B.line2}` }}>
+                    <div key={sportKey} className="space-y-1.5">
+                      <span className="text-sm" style={{ color: B.dim }}>{sport.label}</span>
+                      <div className="grid grid-cols-2 gap-1.5 rounded-xl p-1.5" style={{ background: B.card, border: `1px solid ${B.line2}` }}>
                         {LEVELS.map((l) => (
                           <button
                             key={l.value}
                             type="button"
                             onClick={() => setLevels((prev) => ({ ...prev, [sportKey]: l.value }))}
-                            className="flex-1 text-center py-2 rounded-lg text-xs font-semibold transition-all"
+                            className="text-center py-2 rounded-lg text-xs font-semibold transition-all"
                             style={{
                               background: levels[sportKey] === l.value ? B.limeSolid : "transparent",
                               color: levels[sportKey] === l.value ? "#0B0D08" : B.dim,
