@@ -7,14 +7,7 @@ import { Plus, Search, CalendarDays, MapPin } from "lucide-react";
 import { SportBadge } from "@/components/sport-badge";
 import { SportTile, LevelPill, Avatar, AvatarStack } from "@/components/sport-icon";
 import { formatMatchLocationShort } from "@/lib/argentina-provincias";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", blue: "#5B9BFF",
-  orange: "#E9885B", text: "#F5F6F1", dim: "rgba(255,255,255,0.56)",
-  faint: "rgba(255,255,255,0.40)", limeDim: "rgba(182,242,59,0.14)",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Mapeo de niveles a etiquetas en español */
 const levelLabels: Record<string, string> = {
@@ -109,7 +102,7 @@ export default async function DashboardPage() {
           <Link
             href="/partidos/crear"
             className="flex-1 flex items-center justify-center gap-2 rounded-[14px] py-3.5 text-sm font-bold transition-all hover:brightness-110"
-            style={{ background: B.lime, color: "#0B0D08" }}
+            style={{ background: B.limeSolid, color: "#0B0D08" }}
           >
             <Plus className="h-4 w-4" strokeWidth={2.5} />
             Crear partido

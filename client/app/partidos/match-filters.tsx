@@ -11,13 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LocationSelect, type LocationValue } from "@/components/location-select";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Opciones de deporte para el filtro, incluyendo "Todos" */
 const SPORTS = [
@@ -147,7 +141,7 @@ export function MatchFilters({ currentSport, activeLocalidad, activeProvincia, m
           <LocationSelect
             value={draft}
             onChange={setDraft}
-            inputClass="w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[#B6F23B]"
+            inputClass="w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[var(--jg-lime)]"
             inputStyle={{ background: B.bg, border: `1px solid ${B.line}`, color: B.text }}
           />
           <button
@@ -155,7 +149,7 @@ export function MatchFilters({ currentSport, activeLocalidad, activeProvincia, m
             onClick={applyLocalidad}
             disabled={!draft.provinciaNombre || !draft.localidad}
             className="w-full rounded-[13px] py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40"
-            style={{ background: B.lime, color: "#0B0D08" }}
+            style={{ background: B.limeSolid, color: "#0B0D08" }}
           >
             Aplicar
           </button>

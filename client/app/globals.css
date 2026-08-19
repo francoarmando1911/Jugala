@@ -89,6 +89,30 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.546 0.215 262.881);
+
+  /* === Paleta de marca Jugala (modo claro) === */
+  --jg-bg: #FAFAF6;
+  --jg-card: #FFFFFF;
+  --jg-line: rgba(11,13,8,0.10);
+  --jg-line2: rgba(11,13,8,0.065);
+  --jg-lime: #5C8A00;
+  --jg-lime-dim: rgba(92,138,0,0.12);
+  --jg-lime-solid: #B6F23B;
+  --jg-text: #14170D;
+  --jg-dim: rgba(11,13,8,0.62);
+  --jg-faint: rgba(11,13,8,0.42);
+  --jg-ghost: rgba(11,13,8,0.24);
+  --jg-blue: #2F6FE0;
+  --jg-orange: #C1592B;
+
+  /* === Colores por deporte (modo claro, oscurecidos para contraste) === */
+  --jg-sport-tennis: #8A6D00;
+  --jg-sport-padel: #5C8A00;
+  --jg-sport-football: #2F6FE0;
+
+  /* === Colores de estado (modo claro) === */
+  --jg-warn: #8A6D00;
+  --jg-danger: #C43D3D;
 }
 
 .dark {
@@ -129,6 +153,30 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.696 0.155 262.881);
+
+  /* === Paleta de marca Jugala (modo oscuro, original) === */
+  --jg-bg: #0B0D08;
+  --jg-card: #181B11;
+  --jg-line: rgba(255,255,255,0.09);
+  --jg-line2: rgba(255,255,255,0.055);
+  --jg-lime: #B6F23B;
+  --jg-lime-dim: rgba(182,242,59,0.14);
+  --jg-lime-solid: #B6F23B;
+  --jg-text: #F5F6F1;
+  --jg-dim: rgba(255,255,255,0.56);
+  --jg-faint: rgba(255,255,255,0.40);
+  --jg-ghost: rgba(255,255,255,0.28);
+  --jg-blue: #5B9BFF;
+  --jg-orange: #E9885B;
+
+  /* === Colores por deporte (modo oscuro, original) === */
+  --jg-sport-tennis: #E9D24B;
+  --jg-sport-padel: #B6F23B;
+  --jg-sport-football: #5B9BFF;
+
+  /* === Colores de estado (modo oscuro, original) === */
+  --jg-warn: #E9D24B;
+  --jg-danger: #FF6B6B;
 }
 
 @layer base {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Search, Plus, MessageCircle, User } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { B } from "@/lib/design-tokens";
 
 /** @description Items de navegación del bottom bar con sus rutas e íconos */
 const NAV_ITEMS = [
@@ -45,9 +46,10 @@ export function BottomNav() {
       >
         {/* Contenedor con efecto liquid glass */}
         <div
-          className="mx-0 rounded-none border-t border-white/[0.08]"
+          className="mx-0 rounded-none border-t"
           style={{
-            background: "linear-gradient(135deg, rgba(24,27,17,0.82) 0%, rgba(11,13,8,0.92) 100%)",
+            borderColor: B.line,
+            background: `linear-gradient(135deg, color-mix(in srgb, ${B.card} 82%, transparent) 0%, color-mix(in srgb, ${B.bg} 92%, transparent) 100%)`,
             backdropFilter: "blur(40px) saturate(1.8)",
             WebkitBackdropFilter: "blur(40px) saturate(1.8)",
             boxShadow:
@@ -58,7 +60,7 @@ export function BottomNav() {
           <div
             className="absolute inset-x-0 top-0 h-px"
             style={{
-              background: "linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.1) 50%, transparent 90%)",
+              background: `linear-gradient(90deg, transparent 10%, color-mix(in srgb, ${B.text} 10%, transparent) 50%, transparent 90%)`,
             }}
           />
 
@@ -78,7 +80,7 @@ export function BottomNav() {
                     <div
                       className="flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 active:scale-90"
                       style={{
-                        background: "#B6F23B",
+                        background: B.limeSolid,
                         boxShadow: "0 4px 20px rgba(182,242,59,0.35), 0 2px 8px rgba(0,0,0,0.3)",
                       }}
                     >
@@ -108,7 +110,7 @@ export function BottomNav() {
                     <Icon
                       className="h-5 w-5 transition-all duration-300"
                       style={{
-                        color: active ? "#B6F23B" : "rgba(255,255,255,0.4)",
+                        color: active ? B.lime : B.faint,
                         filter: active ? "drop-shadow(0 0 6px rgba(182,242,59,0.4))" : "none",
                       }}
                       strokeWidth={active ? 2.2 : 1.8}
@@ -118,7 +120,7 @@ export function BottomNav() {
                   <span
                     className="text-[10px] font-medium transition-all duration-300 relative z-10"
                     style={{
-                      color: active ? "#B6F23B" : "rgba(255,255,255,0.35)",
+                      color: active ? B.lime : B.faint,
                     }}
                   >
                     {item.label}
@@ -129,7 +131,7 @@ export function BottomNav() {
                     <div
                       className="absolute -bottom-0.5 w-1 h-1 rounded-full transition-all duration-500"
                       style={{
-                        background: "#B6F23B",
+                        background: B.limeSolid,
                         boxShadow: "0 0 6px rgba(182,242,59,0.6)",
                       }}
                     />

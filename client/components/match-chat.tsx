@@ -4,13 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { getPusherClient } from "@/lib/pusher-client";
 import { sendMessage } from "@/app/actions/message";
 import { MessageCircle, Send, ChevronDown, ChevronUp } from "lucide-react";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line2: "rgba(255,255,255,0.055)",
-  lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)", text: "#F5F6F1",
-  dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Tipo de un mensaje del chat */
 type ChatMessage = {
@@ -118,7 +112,7 @@ export function MatchChat({
           <div style={{ height: 1, background: B.line2 }} />
 
           {/* Lista de mensajes */}
-          <div className="max-h-80 min-h-[120px] overflow-y-auto px-4 py-3" style={{ background: "rgba(255,255,255,0.02)" }}>
+          <div className="max-h-80 min-h-[120px] overflow-y-auto px-4 py-3" style={{ background: `color-mix(in srgb, ${B.text} 2%, transparent)` }}>
             {loading ? (
               <p className="py-8 text-center text-sm" style={{ color: B.faint }}>Cargando mensajes...</p>
             ) : messages.length === 0 ? (
@@ -140,14 +134,14 @@ export function MatchChat({
                       <div
                         className={`max-w-[80%] rounded-2xl px-3 py-1.5 text-sm ${isMe ? "rounded-br-sm" : "rounded-bl-sm"}`}
                         style={{
-                          background: isMe ? B.lime : "rgba(255,255,255,0.07)",
+                          background: isMe ? B.limeSolid : `color-mix(in srgb, ${B.text} 8%, transparent)`,
                           color: isMe ? "#0B0D08" : B.text,
                           fontWeight: isMe ? 500 : 400,
                         }}
                       >
                         {msg.content}
                       </div>
-                      <span className="mt-0.5 px-1 text-[10px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+                      <span className="mt-0.5 px-1 text-[10px]" style={{ color: B.faint }}>
                         {formatTime(msg.createdAt)}
                       </span>
                     </div>
@@ -170,14 +164,14 @@ export function MatchChat({
               placeholder="Escribí un mensaje..."
               maxLength={500}
               disabled={sending}
-              className="flex-1 rounded-xl px-3.5 py-2.5 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[#B6F23B] placeholder:text-[rgba(255,255,255,0.3)]"
+              className="flex-1 rounded-xl px-3.5 py-2.5 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[var(--jg-lime)] placeholder:text-[var(--jg-faint)]"
               style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${B.line2}`, color: B.text }}
             />
             <button
               onClick={handleSend}
               disabled={!input.trim() || sending}
               className="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl transition-all disabled:opacity-30"
-              style={{ background: B.lime, color: "#0B0D08" }}
+              style={{ background: B.limeSolid, color: "#0B0D08" }}
             >
               <Send className="h-4 w-4" />
             </button>

@@ -5,14 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, CalendarDays, MapPin, Users } from "lucide-react";
 import { SportTile, AvatarStack } from "@/components/sport-icon";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-  blue: "#5B9BFF", orange: "#E9885B",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Configuración de cada tab con label, color y query param */
 const TABS = [
@@ -230,7 +223,7 @@ export default async function HistorialPage({
                       ) : (
                         <span
                           className="text-[12px] font-semibold rounded-full px-3 py-1"
-                          style={{ background: "rgba(233,210,75,0.14)", color: "#E9D24B" }}
+                          style={{ background: "rgba(233,210,75,0.14)", color: B.warn }}
                         >
                           Completo
                         </span>

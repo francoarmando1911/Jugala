@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton-loader";
 /** @description Skeleton de carga para la página de perfil público del jugador */
 export default function JugadorLoading() {
   return (
-    <div className="flex min-h-screen flex-col" style={{ background: "#0B0D08" }}>
+    <div className="flex min-h-screen flex-col" style={{ background: "var(--jg-bg)" }}>
       <main className="flex-1 mx-auto w-full max-w-lg px-4 py-8 space-y-6">
         {/* Volver */}
         <Skeleton className="h-5 w-20" />

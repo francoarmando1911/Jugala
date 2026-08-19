@@ -6,14 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, MapPin, CalendarDays, Trophy, Star, Pencil } from "lucide-react";
 import { Avatar } from "@/components/sport-icon";
 import { SportBadge } from "@/components/sport-badge";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line2: "rgba(255,255,255,0.055)",
-  lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-  blue: "#5B9BFF", orange: "#E9885B",
-};
+import { B } from "@/lib/design-tokens";
 
 /** @description Mapeo de días internos a etiquetas en español */
 const dayLabels: Record<string, string> = {

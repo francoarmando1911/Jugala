@@ -7,13 +7,7 @@ import { updateProfile } from "@/app/actions/profile";
 import { SportGlyph } from "@/components/sport-icon";
 import { LocationSelect, type LocationValue } from "@/components/location-select";
 import { parseZoneText } from "@/lib/argentina-provincias";
-
-/** @description Paleta de colores del sistema de diseño */
-const B = {
-  bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)",
-  text: "#F5F6F1", dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
-};
+import { B } from "@/lib/design-tokens";
 
 type SportKey = "TENNIS" | "PADEL" | "FOOTBALL";
 type LevelKey = "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "COMPETITIVE";
@@ -161,7 +155,7 @@ export function EditProfileForm({
   );
 
   const inputStyle = { background: B.card, border: `1px solid ${B.line}`, color: B.text };
-  const inputClass = "w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[#B6F23B] placeholder:text-[rgba(255,255,255,0.3)]";
+  const inputClass = "w-full rounded-[13px] px-3.5 py-3 text-sm border-0 focus:outline-none focus:ring-1 focus:ring-[var(--jg-lime)] placeholder:text-[var(--jg-faint)]";
 
   /* Generar color e iniciales para el avatar por defecto */
   const palette = ["#5B9BFF","#E9885B","#7FD17F","#C77DFF","#F2A93B","#5BD0C8","#FF8BA0"];
@@ -248,7 +242,7 @@ export function EditProfileForm({
                             onClick={() => setLevels((prev) => ({ ...prev, [sportKey]: l.value }))}
                             className="flex-1 text-center py-2 rounded-lg text-xs font-semibold transition-all"
                             style={{
-                              background: levels[sportKey] === l.value ? B.lime : "transparent",
+                              background: levels[sportKey] === l.value ? B.limeSolid : "transparent",
                               color: levels[sportKey] === l.value ? "#0B0D08" : B.dim,
                             }}
                           >
@@ -314,13 +308,13 @@ export function EditProfileForm({
             <p className="text-right text-xs mt-1" style={{ color: B.faint }}>{bio.length}/280</p>
           </div>
 
-          {error && <p className="text-sm text-center" style={{ color: "#FF6B6B" }}>{error}</p>}
+          {error && <p className="text-sm text-center" style={{ color: B.danger }}>{error}</p>}
 
           <button
             onClick={handleSubmit}
             disabled={loading}
             className="w-full rounded-[15px] py-4 text-base font-bold transition-all hover:brightness-110 disabled:opacity-50"
-            style={{ background: B.lime, color: "#0B0D08" }}
+            style={{ background: B.limeSolid, color: "#0B0D08" }}
           >
             {loading ? "Guardando..." : "Guardar cambios"}
           </button>
