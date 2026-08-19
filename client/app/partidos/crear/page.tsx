@@ -7,6 +7,7 @@ import { ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SportGlyph } from "@/components/sport-icon";
+import { LocationSelect, type LocationValue } from "@/components/location-select";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -37,6 +38,8 @@ export default function CrearPartidoPage() {
   const [error, setError] = useState("");
   const [sport, setSport] = useState<"TENNIS" | "PADEL" | "FOOTBALL">("PADEL");
   const [maxPlayers, setMaxPlayers] = useState(4);
+  const [location, setLocation] = useState<LocationValue>({ provinciaId: "", provinciaNombre: "", localidad: "" });
+  const [venue, setVenue] = useState("");
 
   /** @description Cambia el deporte y resetea los cupos al valor por defecto del deporte */
   const handleSportChange = (value: "TENNIS" | "PADEL" | "FOOTBALL") => {
@@ -48,15 +51,26 @@ export default function CrearPartidoPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+
+    if (!location.provinciaId || !location.localidad) {
+      setError("Elegí provincia y localidad.");
+      return;
+    }
+    if (!venue.trim()) {
+      setError("Indicá la cancha o dirección.");
+      return;
+    }
+
     setLoading(true);
     const fd = new FormData(e.currentTarget);
+    const fullLocation = `${venue.trim()} — ${location.localidad}, ${location.provinciaNombre}`;
     const result = await createMatch({
       sport,
       title: fd.get("title") as string,
       description: fd.get("description") as string,
       date: fd.get("date") as string,
       time: fd.get("time") as string,
-      location: fd.get("location") as string,
+      location: fullLocation,
       maxPlayers,
     });
     if (result?.error) { setError(result.error); setLoading(false); }
@@ -149,8 +163,21 @@ export default function CrearPartidoPage() {
 
           <div>
             {fieldLabel("Ubicación")}
-            <input name="location" required placeholder="Ej: Club Norte, Cancha 3"
-              className={inputClass} style={inputStyle} />
+            <div className="space-y-3">
+              <LocationSelect
+                value={location}
+                onChange={setLocation}
+                inputClass={inputClass}
+                inputStyle={inputStyle}
+              />
+              <input
+                value={venue}
+                onChange={(e) => setVenue(e.target.value)}
+                placeholder="Ej: Club Norte, Cancha 3"
+                className={inputClass}
+                style={inputStyle}
+              />
+            </div>
           </div>
 
           {/* Control de cupos con incremento/decremento */}

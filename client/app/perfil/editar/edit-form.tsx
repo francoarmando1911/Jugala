@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ChevronLeft, Camera } from "lucide-react";
 import { updateProfile } from "@/app/actions/profile";
 import { SportGlyph } from "@/components/sport-icon";
+import { LocationSelect, type LocationValue } from "@/components/location-select";
+import { PROVINCIAS_AR } from "@/lib/argentina-provincias";
 
 /** @description Paleta de colores del sistema de diseño */
 const B = {
@@ -94,7 +96,15 @@ export function EditProfileForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [bio, setBio] = useState(initialData.bio);
-  const [zone, setZone] = useState(initialData.zone);
+  const [location, setLocation] = useState<LocationValue>(() => {
+    /* Intentar reconstruir provincia/localidad a partir del texto libre guardado previamente */
+    const parts = initialData.zone.split(",").map((p) => p.trim());
+    if (parts.length === 2) {
+      const provincia = PROVINCIAS_AR.find((p) => p.nombre.toLowerCase() === parts[1].toLowerCase());
+      if (provincia) return { provinciaId: provincia.id, provinciaNombre: provincia.nombre, localidad: parts[0] };
+    }
+    return { provinciaId: "", provinciaNombre: "", localidad: "" };
+  });
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.image);
   const [imageData, setImageData] = useState<string | null>(null);
   const [selectedSports, setSelectedSports] = useState<Set<SportKey>>(
@@ -132,13 +142,13 @@ export function EditProfileForm({
   const handleSubmit = async () => {
     setError("");
     if (selectedSports.size === 0) { setError("Elegí al menos un deporte."); return; }
-    if (!zone.trim()) { setError("Indicá tu zona de juego."); return; }
+    if (!location.provinciaId || !location.localidad) { setError("Indicá tu zona de juego."); return; }
 
     setLoading(true);
     try {
       await updateProfile({
         bio,
-        zone,
+        zone: `${location.localidad}, ${location.provinciaNombre}`,
         sports: Array.from(selectedSports).map((sport) => ({ sport, level: levels[sport] })),
         availability,
         image: imageData !== null ? imageData : undefined,
@@ -260,12 +270,11 @@ export function EditProfileForm({
           {/* Zona de juego */}
           <div>
             {fieldLabel("Zona de juego")}
-            <input
-              value={zone}
-              onChange={(e) => setZone(e.target.value)}
-              placeholder="Ej: Palermo, Zona Norte..."
-              className={inputClass}
-              style={inputStyle}
+            <LocationSelect
+              value={location}
+              onChange={setLocation}
+              inputClass={inputClass}
+              inputStyle={inputStyle}
             />
           </div>
 

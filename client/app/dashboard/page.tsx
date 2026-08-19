@@ -214,7 +214,7 @@ export default async function DashboardPage() {
                         <LevelPill level="INTERMEDIATE" sport={match.sport} />
                       </div>
                       <div style={{ height: 1, background: B.line2 }} />
-                      {/* Participantes y botón de unirse */}
+                      {/* Participantes: el usuario ya está anotado en estos partidos */}
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center gap-2.5">
                           <AvatarStack names={playerNames.slice(0, 3)} size={26} />
@@ -224,14 +224,9 @@ export default async function DashboardPage() {
                             </span>
                           )}
                         </div>
-                        {match.status === "OPEN" && spotsLeft > 0 && (
-                          <span
-                            className="text-[13px] font-bold rounded-full px-4 py-2"
-                            style={{ background: B.lime, color: "#0B0D08" }}
-                          >
-                            Unirme
-                          </span>
-                        )}
+                        <span className="text-[11px] font-semibold" style={{ color: B.lime }}>
+                          Ya estás anotado
+                        </span>
                       </div>
                     </div>
                   </Link>

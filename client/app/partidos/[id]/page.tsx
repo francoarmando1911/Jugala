@@ -141,8 +141,8 @@ export default async function PartidoPage({
                       }}
                     >
                       <Avatar name={participant.user.name || "U"} size={36} />
-                      <div className="min-w-0">
-                        <Link href={`/jugador/${participant.user.id}`} className="text-sm font-semibold truncate hover:underline" style={{ color: B.text }}>
+                      <div className="min-w-0 flex-1">
+                        <Link href={`/jugador/${participant.user.id}`} className="block text-sm font-semibold truncate hover:underline" style={{ color: B.text }}>
                           {participant.user.name}
                           {isYou && <span style={{ color: B.lime }}> (vos)</span>}
                         </Link>
