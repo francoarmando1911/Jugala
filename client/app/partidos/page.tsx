@@ -11,7 +11,7 @@ import { formatMatchLocationShort, parseZoneText } from "@/lib/argentina-provinc
 /** @description Paleta de colores del sistema de diseño */
 const B = {
   bg: "#0B0D08", card: "#181B11", line: "rgba(255,255,255,0.09)",
-  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", text: "#F5F6F1",
+  line2: "rgba(255,255,255,0.055)", lime: "#B6F23B", limeDim: "rgba(182,242,59,0.14)", text: "#F5F6F1",
   dim: "rgba(255,255,255,0.56)", faint: "rgba(255,255,255,0.40)",
 };
 
@@ -124,6 +124,7 @@ export default async function PartidosPage({
               {matches.map((match) => {
                 const spotsLeft = match.maxPlayers - match.participants.length;
                 const playerNames = match.participants.map(p => p.user.name || "Anon");
+                const isAlreadyIn = match.participants.some(p => p.userId === session.user.id);
                 const dateStr = new Date(match.date).toLocaleDateString("es-AR", {
                   weekday: "short", day: "numeric", month: "short",
                 });
@@ -167,12 +168,20 @@ export default async function PartidosPage({
                               : "Completo"}
                           </span>
                         </div>
-                        {match.status === "OPEN" && spotsLeft > 0 && (
+                        {match.status === "OPEN" && spotsLeft > 0 && !isAlreadyIn && (
                           <span
                             className="text-[13px] font-bold rounded-full px-4 py-2"
                             style={{ background: B.lime, color: "#0B0D08" }}
                           >
                             Unirme
+                          </span>
+                        )}
+                        {match.status === "OPEN" && spotsLeft > 0 && isAlreadyIn && (
+                          <span
+                            className="text-[11px] font-semibold rounded-full px-4 py-2"
+                            style={{ background: B.limeDim, color: B.lime }}
+                          >
+                            Ya estás anotado
                           </span>
                         )}
                         {match.status === "FULL" && (
