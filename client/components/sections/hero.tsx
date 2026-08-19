@@ -1,20 +1,33 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Trophy, Users } from "lucide-react";
+import { B } from "@/lib/design-tokens";
 
-/** @description Paleta de colores para la sección hero */
-const B = { ink: "#0B0D08", lime: "#B6F23B", paper: "#FAFAF6" };
+/**
+ * @description Formatea un conteo real de la plataforma para mostrar en el hero.
+ * Números grandes se abrevian en miles (ej: 1.234 -> "1.2k"). El prefijo "+"
+ * indica que el valor mostrado es un redondeo hacia abajo del conteo real.
+ * @param n - Conteo exacto
+ */
+function formatStat(n: number): string {
+  if (n < 1000) return String(n);
+  const rounded = Math.floor(n / 100) / 10;
+  const display = `${rounded}k`;
+  return n > rounded * 1000 ? `+${display}` : display;
+}
 
 /**
  * @description Sección hero de la landing page.
  * Incluye badge de deportes, título principal, subtítulo,
- * botones de acción (CTA) y estadísticas de la plataforma.
+ * botones de acción (CTA) y estadísticas reales de la plataforma.
+ * @param playerCount - Cantidad de usuarios registrados
+ * @param matchCount - Cantidad de partidos creados
  */
-export function Hero() {
+export function Hero({ playerCount, matchCount }: { playerCount: number; matchCount: number }) {
   return (
     <section
       className="relative overflow-hidden"
       style={{
-        background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(182,242,59,0.13), transparent 60%), ${B.ink}`,
+        background: `radial-gradient(ellipse 80% 60% at 50% -10%, rgba(182,242,59,0.13), transparent 60%), ${B.bg}`,
       }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
@@ -23,9 +36,9 @@ export function Hero() {
           <div
             className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm"
             style={{
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.8)",
+              background: `color-mix(in srgb, ${B.text} 6%, transparent)`,
+              border: `1px solid ${B.line}`,
+              color: B.dim,
             }}
           >
             🎾 Tenis · Pádel · Fútbol
@@ -36,7 +49,7 @@ export function Hero() {
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
             style={{
               fontFamily: "var(--font-archivo), Archivo, sans-serif",
-              color: B.paper,
+              color: B.text,
             }}
           >
             Encontrá con quién{" "}
@@ -46,7 +59,7 @@ export function Hero() {
           {/* Subtítulo */}
           <p
             className="mt-6 text-lg sm:text-xl max-w-2xl leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.55)" }}
+            style={{ color: B.dim }}
           >
             Conectate con jugadores de tu nivel, en tu zona y en tus horarios.
             Sumate a partidos abiertos o creá los tuyos en menos de un minuto.
@@ -57,7 +70,7 @@ export function Hero() {
             <Link
               href="/registro"
               className="group inline-flex items-center gap-2 rounded-full px-7 py-3 text-base font-semibold transition-all hover:brightness-110"
-              style={{ background: B.lime, color: B.ink }}
+              style={{ background: B.limeSolid, color: "#0B0D08" }}
             >
               Empezar gratis
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -66,8 +79,8 @@ export function Hero() {
               href="/partidos"
               className="inline-flex items-center rounded-full px-7 py-3 text-base font-semibold transition-colors hover:bg-white/10"
               style={{
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: B.paper,
+                border: `1px solid ${B.line}`,
+                color: B.text,
               }}
             >
               Ver partidos cerca
@@ -77,11 +90,11 @@ export function Hero() {
           {/* Estadísticas de la plataforma */}
           <div
             className="mt-16 grid grid-cols-3 gap-8 sm:gap-12 pt-8 w-full max-w-2xl"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+            style={{ borderTop: `1px solid ${B.line}` }}
           >
             {[
-              { icon: Users, value: "+1.2k", label: "Jugadores" },
-              { icon: Trophy, value: "450", label: "Partidos" },
+              { icon: Users, value: formatStat(playerCount), label: "Jugadores" },
+              { icon: Trophy, value: formatStat(matchCount), label: "Partidos" },
               { icon: MapPin, value: "30+", label: "Zonas" },
             ].map(({ icon: Icon, value, label }) => (
               <div key={label} className="flex flex-col items-center gap-2">
@@ -91,13 +104,13 @@ export function Hero() {
                 />
                 <div
                   className="text-2xl font-bold tabular-nums"
-                  style={{ color: B.paper }}
+                  style={{ color: B.text }}
                 >
                   {value}
                 </div>
                 <div
                   className="text-xs uppercase tracking-wide"
-                  style={{ color: "rgba(255,255,255,0.4)" }}
+                  style={{ color: B.faint }}
                 >
                   {label}
                 </div>
